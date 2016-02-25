@@ -3,7 +3,7 @@ Product: Integration tests for WSO2 ESB Redmine connector
 
     - Maven 3.x
     - Java 1.6 or above
-    - The org.wso2.esb.integration.integration-base project is required and It will found in https://github.com/wso2-extensions/esb-integration-base.
+    - The org.wso2.esb.integration.integration-base project is required and It will found in https://github.com/wso2-extensions/esb            -integration-base.
 
     Tested Platforms: 
 
@@ -29,11 +29,11 @@ Steps to follow in setting integration test.
 
             <messageFormatter contentType="application/json" class="org.apache.synapse.commons.json.JsonStreamFormatter"/>
 			
-			<messageBuilder contentType="text/javascript" class="org.wso2.carbon.relay.BinaryRelayBuilder"/>
+	    <messageBuilder contentType="text/javascript" class="org.wso2.carbon.relay.BinaryRelayBuilder"/>
 
             <messageBuilder contentType="text/html" class="org.wso2.carbon.relay.BinaryRelayBuilder"/>
 
-			<messageBuilder contentType="application/json" class="org.apache.synapse.commons.json.JsonStreamBuilder"/>
+	    <messageBuilder contentType="application/json" class="org.apache.synapse.commons.json.JsonStreamBuilder"/>
 
  4.  Based on the content type of the attachment file you are adding in step 7-g-6, add the relevant message formatter and builder.
 
@@ -52,7 +52,7 @@ Steps to follow in setting integration test.
      a)  Create a fresh account in Redmine using the URL http://m.redmine.org/ with the web browser.
      b)  Login to the administrations panel of the account created using the login credentials with the specific API URL.
      c)  Go to Administration -> Settings -> Authentication and enable the check box in "Enable REST web service".
-     d)  Go to /my/account URL of your Redmine demo site and copy the API Key from the right hand side of the screen to apiKey property in the redmine.properties property file.
+     d)  Go to /my/account URL of your Redmine demo site and copy the API Key from the right hand side of the screen to apiKey property           in the redmine.properties property file.
      e)  Update the API URL of the created account in the property named apiUrl in the redmine.properties property file.
      f)  Go to Administration and click on 'Load Default Configuration' to load some default settings to the demo instance of Redmine.  
         
@@ -68,7 +68,7 @@ Steps to follow in setting integration test.
 
         5)    attachmentContentType is the content type of the attachment to be added.
 
-        6)    attachmentFileName is the name of the attachment file to be added. Set the resourceDirectoryRelativePath property to the relative path leading to this attachment file.
+        6)    attachmentFileName is the name of the attachment file to be added. Set the resourceDirectoryRelativePath property to the                 relative path leading to this attachment file.
 
         7)    createProjectName is the name of a project to be created.
 
