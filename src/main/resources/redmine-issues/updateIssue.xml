@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
- ~  Copyright (c) 2016, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
- ~
- ~  WSO2 Inc. licenses this file to you under the Apache License,
- ~  Version 2.0 (the "License"); you may not use this file except
- ~  in compliance with the License.
- ~  You may obtain a copy of the License at
- ~
- ~    http://www.apache.org/licenses/LICENSE-2.0
- ~
- ~  Unless required by applicable law or agreed to in writing,
- ~  software distributed under the License is distributed on an
- ~  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- ~  KIND, either express or implied.  See the License for the
- ~  specific language governing permissions and limitations
- ~  under the License.
--->
+  ~ Copyright (c) 2016, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+  ~
+  ~   WSO2 Inc. licenses this file to you under the Apache License,
+  ~   Version 2.0 (the "License"); you may not use this file except
+  ~   in compliance with the License.
+  ~   You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~  Unless required by applicable law or agreed to in writing,
+  ~  software distributed under the License is distributed on an
+  ~  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  ~  KIND, either express or implied.  See the License for the
+  ~  specific language governing permissions and limitations
+  ~  under the License.
+  -->
 <template name="updateIssue" xmlns="http://ws.apache.org/ns/synapse">
     <parameter name="id" description="The issue id."/>
     <parameter name="projectId" description="The projectId is project identifier."/>
@@ -78,34 +78,34 @@
         </payloadFactory>
         <script language="js">
             <![CDATA[
-			var tracker_id = mc.getProperty("uri.var.trackerId");
-			var priority_id = mc.getProperty("uri.var.priorityId");
-			var custom_fields = mc.getProperty("uri.var.customFields");
-			var uploads = mc.getProperty("uri.var.uploads");
-			var watcher_user_ids = mc.getProperty('uri.var.watcherUserIds');
-			payload = mc.getPayloadJSON();
-			
-			if (tracker_id != null && tracker_id != "") {
-				payload.issue.tracker_id = eval("("+tracker_id+")");
-			}
-			
-			if (priority_id != null && priority_id != "") {
-				payload.issue.priority_id = eval("("+priority_id+")");
-			}
-			
-			if (custom_fields != null && custom_fields != "") {
-				payload.issue.custom_fields = eval("("+custom_fields+")");
-			}
-			
-			if (uploads != null && uploads != "") {
-				payload.issue.uploads = eval("("+uploads+")");
-			}
-			
-			if (watcher_user_ids != null && watcher_user_ids != "") {
-				payload.issue.watcher_user_ids = eval("("+watcher_user_ids+")");
-			}
-			mc.setPayloadJSON(payload);
-		]]>
+            var tracker_id = mc.getProperty("uri.var.trackerId");
+            var priority_id = mc.getProperty("uri.var.priorityId");
+            var custom_fields = mc.getProperty("uri.var.customFields");
+            var uploads = mc.getProperty("uri.var.uploads");
+            var watcher_user_ids = mc.getProperty('uri.var.watcherUserIds');
+            payload = mc.getPayloadJSON();
+
+            if (tracker_id != null && tracker_id != "") {
+                payload.issue.tracker_id = eval("("+tracker_id+")");
+            }
+
+            if (priority_id != null && priority_id != "") {
+                payload.issue.priority_id = eval("("+priority_id+")");
+            }
+
+            if (custom_fields != null && custom_fields != "") {
+                payload.issue.custom_fields = eval("("+custom_fields+")");
+            }
+
+            if (uploads != null && uploads != "") {
+                payload.issue.uploads = eval("("+uploads+")");
+            }
+
+            if (watcher_user_ids != null && watcher_user_ids != "") {
+                payload.issue.watcher_user_ids = eval("("+watcher_user_ids+")");
+            }
+            mc.setPayloadJSON(payload);
+        ]]>
         </script>
         <header name="Content-Type" value="application/json" scope="transport"/>
         <property name="messageType" value="application/json" scope="axis2"/>
