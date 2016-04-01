@@ -25,9 +25,9 @@
         <payloadFactory media-type="json">
             <format>
                 {
-                "group": {
-                "name": "$1",
-                "user_ids": [ $2 ]
+                    "group": {
+                    "name": "$1",
+                    "user_ids": [ $2 ]
                 }
                 }
             </format>

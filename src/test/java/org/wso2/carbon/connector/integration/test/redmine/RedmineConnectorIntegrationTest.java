@@ -30,7 +30,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class RedmineConnectorIntegrationTest extends ConnectorIntegrationTestBase {
-
     private Map<String, String> esbRequestHeadersMap = new HashMap<String, String>();
     private Map<String, String> apiRequestHeadersMap = new HashMap<String, String>();
     private Map<String, String> parametersMap = new HashMap<String, String>();
@@ -54,7 +53,6 @@ public class RedmineConnectorIntegrationTest extends ConnectorIntegrationTestBas
      */
     @BeforeClass(alwaysRun = true)
     public void setEnvironment() throws Exception {
-
         init("redmine-connector-1.0.0");
         esbRequestHeadersMap.put("Accept-Charset", "UTF-8");
         esbRequestHeadersMap.put("Content-Type", "application/json");
@@ -79,8 +77,6 @@ public class RedmineConnectorIntegrationTest extends ConnectorIntegrationTestBas
         String apiEndPoint = connectorProperties.getProperty("apiUrl") + "/users/" + connectorProperties.getProperty("userId") + ".json";
         RestResponse<JSONObject> apiRestResponse = sendJsonRestRequest(apiEndPoint, "GET", apiRequestHeadersMap);
 
-        System.out.println("API"+apiRestResponse.getBody().toString());
-        System.out.println("ESB"+esbRestResponse.getBody().toString());
         Assert.assertEquals(esbRestResponse.getBody().getJSONObject("user").get("id"), apiRestResponse.getBody().getJSONObject("user").get("id"));
         Assert.assertEquals(esbRestResponse.getBody().getJSONObject("user").get("login"), apiRestResponse.getBody().getJSONObject("user").get("login"));
         Assert.assertEquals(esbRestResponse.getBody().getJSONObject("user").get("mail"), apiRestResponse.getBody().getJSONObject("user").get("mail"));
@@ -104,7 +100,6 @@ public class RedmineConnectorIntegrationTest extends ConnectorIntegrationTestBas
         Assert.assertEquals(esbRestResponse.getBody().getJSONObject("user").get("id"), apiRestResponse.getBody().getJSONObject("user").get("id"));
         Assert.assertEquals(esbRestResponse.getBody().getJSONObject("user").get("login"), apiRestResponse.getBody().getJSONObject("user").get("login"));
         Assert.assertEquals(esbRestResponse.getBody().getJSONObject("user").get("mail"), apiRestResponse.getBody().getJSONObject("user").get("mail"));
-
     }
 
     /**
@@ -121,8 +116,7 @@ public class RedmineConnectorIntegrationTest extends ConnectorIntegrationTestBas
 
         Assert.assertEquals(esbRestResponse.getHttpStatusCode(), 422);
         Assert.assertEquals(esbRestResponse.getHttpStatusCode(), apiRestResponse.getHttpStatusCode());
-        //Assert.assertEquals(esbRestResponse.getBody().toString().contains("errors"), apiRestResponse.getBody().toString().contains("errors"));
-
+        Assert.assertEquals(esbRestResponse.getBody().toString().contains("errors"), apiRestResponse.getBody().toString().contains("errors"));
     }
 
     /**
@@ -141,7 +135,6 @@ public class RedmineConnectorIntegrationTest extends ConnectorIntegrationTestBas
         Assert.assertEquals(esbRestResponse.getBody().getJSONObject("user").get("id"), apiRestResponse.getBody().getJSONObject("user").get("id"));
         Assert.assertEquals(esbRestResponse.getBody().getJSONObject("user").get("login"), apiRestResponse.getBody().getJSONObject("user").get("login"));
         Assert.assertEquals(esbRestResponse.getHttpStatusCode(), apiRestResponse.getHttpStatusCode());
-
     }
 
     /**
@@ -162,7 +155,6 @@ public class RedmineConnectorIntegrationTest extends ConnectorIntegrationTestBas
         Assert.assertEquals(esbRestResponse.getBody().getJSONObject("user").get("login"), apiRestResponse.getBody().getJSONObject("user").get("login"));
         Assert.assertEquals(esbRestResponse.getBody().getJSONObject("user").getJSONArray("groups").toString(),
                 apiRestResponse.getBody().getJSONObject("user").getJSONArray("groups").toString());
-
     }
 
     /**
@@ -180,7 +172,6 @@ public class RedmineConnectorIntegrationTest extends ConnectorIntegrationTestBas
         RestResponse<JSONObject> apiRestResponse = sendJsonRestRequest(apiEndPoint, "GET", apiRequestHeadersMap);
 
         Assert.assertEquals(esbRestResponse.getHttpStatusCode(), apiRestResponse.getHttpStatusCode());
-
     }
 
     /**
@@ -200,7 +191,6 @@ public class RedmineConnectorIntegrationTest extends ConnectorIntegrationTestBas
         Assert.assertEquals(esbRestResponse.getBody().get("total_count"), apiRestResponse.getBody().get("total_count"));
         Assert.assertEquals(esbRestResponse.getBody().getJSONArray("users").getJSONObject(0).get("id"),
                 apiRestResponse.getBody().getJSONArray("users").getJSONObject(0).get("id"));
-
     }
 
     /**
@@ -221,7 +211,6 @@ public class RedmineConnectorIntegrationTest extends ConnectorIntegrationTestBas
         Assert.assertEquals(esbRestResponse.getBody().get("total_count"), apiRestResponse.getBody().get("total_count"));
         Assert.assertEquals(esbRestResponse.getBody().getJSONArray("users").getJSONObject(0).get("id"),
                 apiRestResponse.getBody().getJSONArray("users").getJSONObject(0).get("id"));
-
     }
 
     /**
@@ -234,7 +223,6 @@ public class RedmineConnectorIntegrationTest extends ConnectorIntegrationTestBas
         RestResponse<JSONObject> esbRestResponse = sendJsonRestRequest(proxyUrl, "POST", esbRequestHeadersMap, "esb_listUsers_negative.json");
 
         Assert.assertEquals(esbRestResponse.getHttpStatusCode(), 401);
-
     }
 
     /**
@@ -256,7 +244,6 @@ public class RedmineConnectorIntegrationTest extends ConnectorIntegrationTestBas
         Assert.assertEquals(apiRestResponse.getBody().getJSONObject("user").getString("id"), userId);
         Assert.assertEquals(apiRestResponse.getBody().getJSONObject("user").get("login"), connectorProperties.getProperty("updateUserLogin"));
         Assert.assertEquals(apiRestResponse.getBody().getJSONObject("user").get("mail"), connectorProperties.getProperty("updateUserMail"));
-
     }
 
     /**
@@ -276,7 +263,6 @@ public class RedmineConnectorIntegrationTest extends ConnectorIntegrationTestBas
 
         Assert.assertEquals(esbRestResponse.getHttpStatusCode(), 200);
         Assert.assertEquals(apiRestResponse.getBody().getJSONObject("user").getString("id"), userId);
-
     }
 
     /**
@@ -294,8 +280,7 @@ public class RedmineConnectorIntegrationTest extends ConnectorIntegrationTestBas
 
         Assert.assertEquals(esbRestResponse.getHttpStatusCode(), 422);
         Assert.assertEquals(esbRestResponse.getHttpStatusCode(), apiRestResponse.getHttpStatusCode());
-        //Assert.assertEquals(esbRestResponse.getBody().toString().contains("errors"), apiRestResponse.getBody().toString().contains("errors"));
-
+        Assert.assertEquals(esbRestResponse.getBody().toString().contains("errors"), apiRestResponse.getBody().toString().contains("errors"));
     }
 
     /**
@@ -310,15 +295,11 @@ public class RedmineConnectorIntegrationTest extends ConnectorIntegrationTestBas
 
         Thread.sleep(Long.parseLong(connectorProperties.getProperty("timeOut")));
 
-        System.out.println("userId>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"+userId);
         String apiEndPoint = connectorProperties.getProperty("apiUrl") + "/users/" + connectorProperties.getProperty("userId") + ".json";
         RestResponse<JSONObject> apiRestResponse = sendJsonRestRequest(apiEndPoint, "GET", apiRequestHeadersMap);
 
-        //System.out.println("ESB"+esbRestResponse.getBody().toString());
-        //System.out.println("API"+apiRestResponse.getBody().toString());
         Assert.assertEquals(esbRestResponse.getHttpStatusCode(), 200);
-        //Assert.assertEquals(apiRestResponse.getHttpStatusCode(), 404);
-
+        Assert.assertEquals(apiRestResponse.getHttpStatusCode(), 404);
     }
 
     /**
@@ -338,7 +319,6 @@ public class RedmineConnectorIntegrationTest extends ConnectorIntegrationTestBas
 
         Assert.assertEquals(esbRestResponse.getHttpStatusCode(), 404);
         Assert.assertEquals(esbRestResponse.getHttpStatusCode(), apiRestResponse.getHttpStatusCode());
-
     }
 
     /**
@@ -361,7 +341,6 @@ public class RedmineConnectorIntegrationTest extends ConnectorIntegrationTestBas
         Assert.assertEquals(esbRestResponse.getBody().getJSONObject("attachment").getString("filename"),
                 apiRestResponse.getBody().getJSONObject("attachment").getString("filename"));
         Assert.assertEquals(esbRestResponse.getHttpStatusCode(), apiRestResponse.getHttpStatusCode());
-
     }
 
     /**
@@ -382,7 +361,6 @@ public class RedmineConnectorIntegrationTest extends ConnectorIntegrationTestBas
         RestResponse<JSONObject> apiRestResponse = sendJsonRestRequest(apiEndPoint, "GET", apiRequestHeadersMap);
 
         Assert.assertEquals(esbRestResponse.getHttpStatusCode(), apiRestResponse.getHttpStatusCode());
-
     }
 
     /**
@@ -409,7 +387,6 @@ public class RedmineConnectorIntegrationTest extends ConnectorIntegrationTestBas
         attachmentToken = esbRestResponse.getBody().getJSONObject("upload").getString("token");
 
         Assert.assertEquals(esbRestResponse.getHttpStatusCode(), 201);
-
     }
 
     /**
@@ -435,7 +412,6 @@ public class RedmineConnectorIntegrationTest extends ConnectorIntegrationTestBas
         RestResponse<JSONObject> esbRestResponse = fileRequestProcessor.processAttachmentForJsonResponse();
 
         Assert.assertEquals(esbRestResponse.getHttpStatusCode(), 401);
-
     }
 
     /**
@@ -1056,7 +1032,6 @@ public class RedmineConnectorIntegrationTest extends ConnectorIntegrationTestBas
                 apiRestResponse.getBody().getJSONObject("time_entry").getJSONObject("issue").get("id"));
         Assert.assertEquals(esbRestResponse.getBody().getJSONObject("time_entry").get("hours"), apiRestResponse
                 .getBody().getJSONObject("time_entry").get("hours"));
-
     }
 
     /**
@@ -1085,7 +1060,6 @@ public class RedmineConnectorIntegrationTest extends ConnectorIntegrationTestBas
                 apiRestResponse.getBody().getJSONObject("time_entry").getJSONObject("project").get("id"));
         Assert.assertEquals(esbRestResponse.getBody().getJSONObject("time_entry").get("hours"), apiRestResponse
                 .getBody().getJSONObject("time_entry").get("hours"));
-
     }
 
     /**
@@ -1114,7 +1088,6 @@ public class RedmineConnectorIntegrationTest extends ConnectorIntegrationTestBas
                 apiRestResponse.getBody().getJSONObject("time_entry").getJSONObject("issue").get("id"));
         Assert.assertEquals(esbRestResponse.getBody().getJSONObject("time_entry").get("comments"), apiRestResponse
                 .getBody().getJSONObject("time_entry").get("comments"));
-
     }
 
     /**
@@ -1133,7 +1106,6 @@ public class RedmineConnectorIntegrationTest extends ConnectorIntegrationTestBas
 
         Assert.assertEquals(esbRestResponse.getHttpStatusCode(), 404);
         Assert.assertEquals(esbRestResponse.getHttpStatusCode(), apiRestResponse.getHttpStatusCode());
-
     }
 
     /**
@@ -1163,7 +1135,6 @@ public class RedmineConnectorIntegrationTest extends ConnectorIntegrationTestBas
                 .getJSONObject("issue").getString("id"));
         Assert.assertEquals(connectorProperties.getProperty("spentOn"),
                 apiRestResponse.getBody().getJSONObject("time_entry").getString("spent_on"));
-
     }
 
     /**
@@ -1193,7 +1164,6 @@ public class RedmineConnectorIntegrationTest extends ConnectorIntegrationTestBas
                 apiRestResponse.getBody().getJSONObject("time_entry").getString("spent_on"));
         Assert.assertEquals(connectorProperties.getProperty("hours"),
                 apiRestResponse.getBody().getJSONObject("time_entry").getString("hours"));
-
     }
 
     /**
@@ -1223,7 +1193,6 @@ public class RedmineConnectorIntegrationTest extends ConnectorIntegrationTestBas
                 .getJSONObject("issue").getString("id"));
         Assert.assertEquals(connectorProperties.getProperty("comments"),
                 apiRestResponse.getBody().getJSONObject("time_entry").getString("comments"));
-
     }
 
     /**
@@ -1244,7 +1213,6 @@ public class RedmineConnectorIntegrationTest extends ConnectorIntegrationTestBas
 
         Assert.assertEquals(esbRestResponse.getHttpStatusCode(), 404);
         Assert.assertEquals(esbRestResponse.getHttpStatusCode(), apiRestResponse.getHttpStatusCode());
-
     }
 
     /**
@@ -1268,7 +1236,6 @@ public class RedmineConnectorIntegrationTest extends ConnectorIntegrationTestBas
 
         Assert.assertEquals(esbRestResponse.getHttpStatusCode(), 200);
         Assert.assertEquals(apiRestResponse.getHttpStatusCode(), 404);
-
     }
 
     /**
@@ -1290,7 +1257,6 @@ public class RedmineConnectorIntegrationTest extends ConnectorIntegrationTestBas
                 sendJsonRestRequest(apiEndPoint, "DELETE", apiRequestHeadersMap);
 
         Assert.assertEquals(esbRestResponse.getHttpStatusCode(), apiRestResponse.getHttpStatusCode());
-
     }
 
     /**
@@ -1318,7 +1284,6 @@ public class RedmineConnectorIntegrationTest extends ConnectorIntegrationTestBas
                 .getBody().getJSONObject("time_entry").get("hours"));
         Assert.assertEquals(esbRestResponse.getBody().getJSONObject("time_entry").get("spent_on"), apiRestResponse
                 .getBody().getJSONObject("time_entry").get("spent_on"));
-
     }
 
     /**
@@ -1336,7 +1301,6 @@ public class RedmineConnectorIntegrationTest extends ConnectorIntegrationTestBas
         final RestResponse<JSONObject> apiRestResponse = sendJsonRestRequest(apiEndPoint, "GET", apiRequestHeadersMap);
 
         Assert.assertEquals(esbRestResponse.getHttpStatusCode(), apiRestResponse.getHttpStatusCode());
-
     }
 
     /**
@@ -1524,14 +1488,12 @@ public class RedmineConnectorIntegrationTest extends ConnectorIntegrationTestBas
     public void testDeleteGroupWithMandatoryParameters() throws Exception {
 
         esbRequestHeadersMap.put("Action", "urn:deleteGroup");
-      //parametersMap.put("deleteId", deleteId);
 
         RestResponse<JSONObject> esbRestResponse = sendJsonRestRequest(proxyUrl, "POST", esbRequestHeadersMap, "esb_deleteGroup_mandatory.json");
 
         Thread.sleep(Long.parseLong(connectorProperties.getProperty("timeOut")));
 
         String apiEndPoint = connectorProperties.getProperty("apiUrl") + "/groups/" + connectorProperties.getProperty("groupId") + ".json";
-        //String apiEndPoint = connectorProperties.getProperty("apiUrl") + "/groups/40.json";
         RestResponse<JSONObject> apiRestResponse = sendJsonRestRequest(apiEndPoint, "GET", apiRequestHeadersMap);
 
         Assert.assertEquals(esbRestResponse.getHttpStatusCode(), 200);
