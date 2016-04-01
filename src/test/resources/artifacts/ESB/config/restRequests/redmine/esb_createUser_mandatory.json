@@ -4,7 +4,7 @@
   "responseType": "json",
   "login": "%s(createUserLogin)",
   "password": "examplepassword",
-  "firstname": "Example",
-  "lastname": "User",
+  "firstname": "Example1",
+  "lastname": "User1",
   "mail": "%s(createUserMail)"
 }
