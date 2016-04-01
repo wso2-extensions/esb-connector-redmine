@@ -35,6 +35,7 @@
             <property name="identifier" expression="json-eval($.identifier)"/>
             <property name="description" expression="json-eval($.description)"/>
             <property name="include" expression="json-eval($.include)"/>
+            <property name="includeGroup" expression="json-eval($.includeGroup)"/>
             <property name="projectId" expression="json-eval($.projectId)"/>
             <property name="trackerId" expression="json-eval($.trackerId)"/>
             <property name="statusId" expression="json-eval($.statusId)"/>
@@ -63,6 +64,9 @@
             <property name="name" expression="json-eval($.name)"/>
             <property name="groupId" expression="json-eval($.groupId)"/>
             <property name="userId" expression="json-eval($.userId)"/>
+            <property name="name" expression="json-eval($.name)"/>
+            <property name="userIds" expression="json-eval($.userIds)"/>
+            <property name="deleteId" expression="json-eval($.deleteId)"/>
             <redmine.init>
                 <apiUrl>{$ctx:apiUrl}</apiUrl>
                 <apiKey>{$ctx:apiKey}</apiKey>
@@ -244,6 +248,37 @@
                         <createdOn>{$ctx:createdOn}</createdOn>
                         <updatedOn>{$ctx:updatedOn}</updatedOn>
                     </redmine.listIssues>
+                </case>
+                <case regex="urn:getGroups">
+                    <redmine.getGroups>
+                    </redmine.getGroups>
+                </case>
+                <case regex="urn:getSingleGroup">
+                    <redmine.getSingleGroup>
+                        <id>{$ctx:id}</id>
+                        <includeGroup>{$ctx:includeGroup}</includeGroup>
+                    </redmine.getSingleGroup>
+                </case>
+                <case regex="urn:getCustomFields">
+                    <redmine.getCustomFields>
+                    </redmine.getCustomFields>
+                </case>
+                <case regex="urn:createGroup">
+                    <redmine.createGroup>
+                        <name>{$ctx:name}</name>
+                        <userIds>{$ctx:userIds}</userIds>
+                    </redmine.createGroup>
+                </case>
+                <case regex="urn:deleteGroup">
+                    <redmine.deleteGroup>
+                        <groupId>{$ctx:groupId}</groupId>
+                    </redmine.deleteGroup>
+                </case>
+                <case regex="urn:addUserToGroup">
+                    <redmine.addUserToGroup>
+                        <groupId>{$ctx:groupId}</groupId>
+                        <userId>{$ctx:userId}</userId>
+                    </redmine.addUserToGroup>
                 </case>
             </switch>
             <filter source="$axis2:HTTP_SC" regex="^[^2][0-9][0-9]">

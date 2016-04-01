@@ -30,33 +30,22 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class RedmineConnectorIntegrationTest extends ConnectorIntegrationTestBase {
-
     private Map<String, String> esbRequestHeadersMap = new HashMap<String, String>();
-
     private Map<String, String> apiRequestHeadersMap = new HashMap<String, String>();
-
     private Map<String, String> parametersMap = new HashMap<String, String>();
 
     private String userId;
-
+    private String groupId;
+    private String deleteId;
     private String projectId;
-
     private String projectIdOptional;
-
     private String issueId;
-
     private String optionalIssueId;
-
     private String optionalUserId;
-
     private String timeEntryId1;
-
     private String timeEntryId2;
-
     private String timeEntryId3;
-
     private String attachmentId;
-
     private String attachmentToken;
 
     /**
@@ -64,15 +53,12 @@ public class RedmineConnectorIntegrationTest extends ConnectorIntegrationTestBas
      */
     @BeforeClass(alwaysRun = true)
     public void setEnvironment() throws Exception {
-
-        init("redmine-connector-1.0.1-SNAPSHOT");
-
+        init("redmine-connector-1.0.0");
         esbRequestHeadersMap.put("Accept-Charset", "UTF-8");
         esbRequestHeadersMap.put("Content-Type", "application/json");
 
         apiRequestHeadersMap.putAll(esbRequestHeadersMap);
         apiRequestHeadersMap.put("X-Redmine-API-Key", connectorProperties.getProperty("apiKey"));
-
     }
 
     /**
@@ -84,16 +70,16 @@ public class RedmineConnectorIntegrationTest extends ConnectorIntegrationTestBas
         esbRequestHeadersMap.put("Action", "urn:createUser");
         RestResponse<JSONObject> esbRestResponse = sendJsonRestRequest(proxyUrl, "POST", esbRequestHeadersMap, "esb_createUser_mandatory.json");
         userId = esbRestResponse.getBody().getJSONObject("user").getString("id");
+        connectorProperties.setProperty("userId",userId);
 
         Thread.sleep(Long.parseLong(connectorProperties.getProperty("timeOut")));
 
-        String apiEndPoint = connectorProperties.getProperty("apiUrl") + "/users/" + userId + ".json";
+        String apiEndPoint = connectorProperties.getProperty("apiUrl") + "/users/" + connectorProperties.getProperty("userId") + ".json";
         RestResponse<JSONObject> apiRestResponse = sendJsonRestRequest(apiEndPoint, "GET", apiRequestHeadersMap);
 
         Assert.assertEquals(esbRestResponse.getBody().getJSONObject("user").get("id"), apiRestResponse.getBody().getJSONObject("user").get("id"));
         Assert.assertEquals(esbRestResponse.getBody().getJSONObject("user").get("login"), apiRestResponse.getBody().getJSONObject("user").get("login"));
         Assert.assertEquals(esbRestResponse.getBody().getJSONObject("user").get("mail"), apiRestResponse.getBody().getJSONObject("user").get("mail"));
-
     }
 
     /**
@@ -114,7 +100,6 @@ public class RedmineConnectorIntegrationTest extends ConnectorIntegrationTestBas
         Assert.assertEquals(esbRestResponse.getBody().getJSONObject("user").get("id"), apiRestResponse.getBody().getJSONObject("user").get("id"));
         Assert.assertEquals(esbRestResponse.getBody().getJSONObject("user").get("login"), apiRestResponse.getBody().getJSONObject("user").get("login"));
         Assert.assertEquals(esbRestResponse.getBody().getJSONObject("user").get("mail"), apiRestResponse.getBody().getJSONObject("user").get("mail"));
-
     }
 
     /**
@@ -131,8 +116,7 @@ public class RedmineConnectorIntegrationTest extends ConnectorIntegrationTestBas
 
         Assert.assertEquals(esbRestResponse.getHttpStatusCode(), 422);
         Assert.assertEquals(esbRestResponse.getHttpStatusCode(), apiRestResponse.getHttpStatusCode());
-        //Assert.assertEquals(esbRestResponse.getBody().toString().contains("errors"), apiRestResponse.getBody().toString().contains("errors"));
-
+        Assert.assertEquals(esbRestResponse.getBody().toString().contains("errors"), apiRestResponse.getBody().toString().contains("errors"));
     }
 
     /**
@@ -151,7 +135,6 @@ public class RedmineConnectorIntegrationTest extends ConnectorIntegrationTestBas
         Assert.assertEquals(esbRestResponse.getBody().getJSONObject("user").get("id"), apiRestResponse.getBody().getJSONObject("user").get("id"));
         Assert.assertEquals(esbRestResponse.getBody().getJSONObject("user").get("login"), apiRestResponse.getBody().getJSONObject("user").get("login"));
         Assert.assertEquals(esbRestResponse.getHttpStatusCode(), apiRestResponse.getHttpStatusCode());
-
     }
 
     /**
@@ -172,7 +155,6 @@ public class RedmineConnectorIntegrationTest extends ConnectorIntegrationTestBas
         Assert.assertEquals(esbRestResponse.getBody().getJSONObject("user").get("login"), apiRestResponse.getBody().getJSONObject("user").get("login"));
         Assert.assertEquals(esbRestResponse.getBody().getJSONObject("user").getJSONArray("groups").toString(),
                 apiRestResponse.getBody().getJSONObject("user").getJSONArray("groups").toString());
-
     }
 
     /**
@@ -190,7 +172,6 @@ public class RedmineConnectorIntegrationTest extends ConnectorIntegrationTestBas
         RestResponse<JSONObject> apiRestResponse = sendJsonRestRequest(apiEndPoint, "GET", apiRequestHeadersMap);
 
         Assert.assertEquals(esbRestResponse.getHttpStatusCode(), apiRestResponse.getHttpStatusCode());
-
     }
 
     /**
@@ -210,7 +191,6 @@ public class RedmineConnectorIntegrationTest extends ConnectorIntegrationTestBas
         Assert.assertEquals(esbRestResponse.getBody().get("total_count"), apiRestResponse.getBody().get("total_count"));
         Assert.assertEquals(esbRestResponse.getBody().getJSONArray("users").getJSONObject(0).get("id"),
                 apiRestResponse.getBody().getJSONArray("users").getJSONObject(0).get("id"));
-
     }
 
     /**
@@ -231,7 +211,6 @@ public class RedmineConnectorIntegrationTest extends ConnectorIntegrationTestBas
         Assert.assertEquals(esbRestResponse.getBody().get("total_count"), apiRestResponse.getBody().get("total_count"));
         Assert.assertEquals(esbRestResponse.getBody().getJSONArray("users").getJSONObject(0).get("id"),
                 apiRestResponse.getBody().getJSONArray("users").getJSONObject(0).get("id"));
-
     }
 
     /**
@@ -244,7 +223,6 @@ public class RedmineConnectorIntegrationTest extends ConnectorIntegrationTestBas
         RestResponse<JSONObject> esbRestResponse = sendJsonRestRequest(proxyUrl, "POST", esbRequestHeadersMap, "esb_listUsers_negative.json");
 
         Assert.assertEquals(esbRestResponse.getHttpStatusCode(), 401);
-
     }
 
     /**
@@ -266,7 +244,6 @@ public class RedmineConnectorIntegrationTest extends ConnectorIntegrationTestBas
         Assert.assertEquals(apiRestResponse.getBody().getJSONObject("user").getString("id"), userId);
         Assert.assertEquals(apiRestResponse.getBody().getJSONObject("user").get("login"), connectorProperties.getProperty("updateUserLogin"));
         Assert.assertEquals(apiRestResponse.getBody().getJSONObject("user").get("mail"), connectorProperties.getProperty("updateUserMail"));
-
     }
 
     /**
@@ -286,7 +263,6 @@ public class RedmineConnectorIntegrationTest extends ConnectorIntegrationTestBas
 
         Assert.assertEquals(esbRestResponse.getHttpStatusCode(), 200);
         Assert.assertEquals(apiRestResponse.getBody().getJSONObject("user").getString("id"), userId);
-
     }
 
     /**
@@ -304,8 +280,7 @@ public class RedmineConnectorIntegrationTest extends ConnectorIntegrationTestBas
 
         Assert.assertEquals(esbRestResponse.getHttpStatusCode(), 422);
         Assert.assertEquals(esbRestResponse.getHttpStatusCode(), apiRestResponse.getHttpStatusCode());
-        //Assert.assertEquals(esbRestResponse.getBody().toString().contains("errors"), apiRestResponse.getBody().toString().contains("errors"));
-
+        Assert.assertEquals(esbRestResponse.getBody().toString().contains("errors"), apiRestResponse.getBody().toString().contains("errors"));
     }
 
     /**
@@ -315,17 +290,16 @@ public class RedmineConnectorIntegrationTest extends ConnectorIntegrationTestBas
     public void testDeleteUserWithMandatoryParameters() throws Exception {
 
         esbRequestHeadersMap.put("Action", "urn:deleteUser");
-        parametersMap.put("userId", userId);
+        //parametersMap.put("userId", userId);
         RestResponse<JSONObject> esbRestResponse = sendJsonRestRequest(proxyUrl, "POST", esbRequestHeadersMap, "esb_deleteUser_mandatory.json", parametersMap);
 
         Thread.sleep(Long.parseLong(connectorProperties.getProperty("timeOut")));
 
-        String apiEndPoint = connectorProperties.getProperty("apiUrl") + "/users/" + userId + ".json";
+        String apiEndPoint = connectorProperties.getProperty("apiUrl") + "/users/" + connectorProperties.getProperty("userId") + ".json";
         RestResponse<JSONObject> apiRestResponse = sendJsonRestRequest(apiEndPoint, "GET", apiRequestHeadersMap);
 
         Assert.assertEquals(esbRestResponse.getHttpStatusCode(), 200);
         Assert.assertEquals(apiRestResponse.getHttpStatusCode(), 404);
-
     }
 
     /**
@@ -345,7 +319,6 @@ public class RedmineConnectorIntegrationTest extends ConnectorIntegrationTestBas
 
         Assert.assertEquals(esbRestResponse.getHttpStatusCode(), 404);
         Assert.assertEquals(esbRestResponse.getHttpStatusCode(), apiRestResponse.getHttpStatusCode());
-
     }
 
     /**
@@ -368,7 +341,6 @@ public class RedmineConnectorIntegrationTest extends ConnectorIntegrationTestBas
         Assert.assertEquals(esbRestResponse.getBody().getJSONObject("attachment").getString("filename"),
                 apiRestResponse.getBody().getJSONObject("attachment").getString("filename"));
         Assert.assertEquals(esbRestResponse.getHttpStatusCode(), apiRestResponse.getHttpStatusCode());
-
     }
 
     /**
@@ -389,7 +361,6 @@ public class RedmineConnectorIntegrationTest extends ConnectorIntegrationTestBas
         RestResponse<JSONObject> apiRestResponse = sendJsonRestRequest(apiEndPoint, "GET", apiRequestHeadersMap);
 
         Assert.assertEquals(esbRestResponse.getHttpStatusCode(), apiRestResponse.getHttpStatusCode());
-
     }
 
     /**
@@ -416,7 +387,6 @@ public class RedmineConnectorIntegrationTest extends ConnectorIntegrationTestBas
         attachmentToken = esbRestResponse.getBody().getJSONObject("upload").getString("token");
 
         Assert.assertEquals(esbRestResponse.getHttpStatusCode(), 201);
-
     }
 
     /**
@@ -442,7 +412,6 @@ public class RedmineConnectorIntegrationTest extends ConnectorIntegrationTestBas
         RestResponse<JSONObject> esbRestResponse = fileRequestProcessor.processAttachmentForJsonResponse();
 
         Assert.assertEquals(esbRestResponse.getHttpStatusCode(), 401);
-
     }
 
     /**
@@ -773,11 +742,10 @@ public class RedmineConnectorIntegrationTest extends ConnectorIntegrationTestBas
 
         Assert.assertEquals(esbRestResponse.getBody().getJSONObject("issue").get("subject"), apiRestResponse.getBody()
                 .getJSONObject("issue").get("subject"));
-        //Assert.assertEquals(esbRestResponse.getBody().getJSONObject("issue").getJSONObject("fixed_version").get("id"),
-        //        apiRestResponse.getBody().getJSONObject("issue").getJSONObject("fixed_version").get("id"));
+        Assert.assertEquals(esbRestResponse.getBody().getJSONObject("issue").getJSONObject("fixed_version").get("id"),
+                apiRestResponse.getBody().getJSONObject("issue").getJSONObject("fixed_version").get("id"));
         Assert.assertEquals(esbRestResponse.getBody().getJSONObject("issue").getString("created_on"),
                 apiRestResponse.getBody().getJSONObject("issue").getString("created_on"));
-
     }
 
     /**
@@ -1064,7 +1032,6 @@ public class RedmineConnectorIntegrationTest extends ConnectorIntegrationTestBas
                 apiRestResponse.getBody().getJSONObject("time_entry").getJSONObject("issue").get("id"));
         Assert.assertEquals(esbRestResponse.getBody().getJSONObject("time_entry").get("hours"), apiRestResponse
                 .getBody().getJSONObject("time_entry").get("hours"));
-
     }
 
     /**
@@ -1093,7 +1060,6 @@ public class RedmineConnectorIntegrationTest extends ConnectorIntegrationTestBas
                 apiRestResponse.getBody().getJSONObject("time_entry").getJSONObject("project").get("id"));
         Assert.assertEquals(esbRestResponse.getBody().getJSONObject("time_entry").get("hours"), apiRestResponse
                 .getBody().getJSONObject("time_entry").get("hours"));
-
     }
 
     /**
@@ -1122,7 +1088,6 @@ public class RedmineConnectorIntegrationTest extends ConnectorIntegrationTestBas
                 apiRestResponse.getBody().getJSONObject("time_entry").getJSONObject("issue").get("id"));
         Assert.assertEquals(esbRestResponse.getBody().getJSONObject("time_entry").get("comments"), apiRestResponse
                 .getBody().getJSONObject("time_entry").get("comments"));
-
     }
 
     /**
@@ -1141,7 +1106,6 @@ public class RedmineConnectorIntegrationTest extends ConnectorIntegrationTestBas
 
         Assert.assertEquals(esbRestResponse.getHttpStatusCode(), 404);
         Assert.assertEquals(esbRestResponse.getHttpStatusCode(), apiRestResponse.getHttpStatusCode());
-
     }
 
     /**
@@ -1171,7 +1135,6 @@ public class RedmineConnectorIntegrationTest extends ConnectorIntegrationTestBas
                 .getJSONObject("issue").getString("id"));
         Assert.assertEquals(connectorProperties.getProperty("spentOn"),
                 apiRestResponse.getBody().getJSONObject("time_entry").getString("spent_on"));
-
     }
 
     /**
@@ -1201,7 +1164,6 @@ public class RedmineConnectorIntegrationTest extends ConnectorIntegrationTestBas
                 apiRestResponse.getBody().getJSONObject("time_entry").getString("spent_on"));
         Assert.assertEquals(connectorProperties.getProperty("hours"),
                 apiRestResponse.getBody().getJSONObject("time_entry").getString("hours"));
-
     }
 
     /**
@@ -1231,7 +1193,6 @@ public class RedmineConnectorIntegrationTest extends ConnectorIntegrationTestBas
                 .getJSONObject("issue").getString("id"));
         Assert.assertEquals(connectorProperties.getProperty("comments"),
                 apiRestResponse.getBody().getJSONObject("time_entry").getString("comments"));
-
     }
 
     /**
@@ -1252,7 +1213,6 @@ public class RedmineConnectorIntegrationTest extends ConnectorIntegrationTestBas
 
         Assert.assertEquals(esbRestResponse.getHttpStatusCode(), 404);
         Assert.assertEquals(esbRestResponse.getHttpStatusCode(), apiRestResponse.getHttpStatusCode());
-
     }
 
     /**
@@ -1276,7 +1236,6 @@ public class RedmineConnectorIntegrationTest extends ConnectorIntegrationTestBas
 
         Assert.assertEquals(esbRestResponse.getHttpStatusCode(), 200);
         Assert.assertEquals(apiRestResponse.getHttpStatusCode(), 404);
-
     }
 
     /**
@@ -1298,7 +1257,6 @@ public class RedmineConnectorIntegrationTest extends ConnectorIntegrationTestBas
                 sendJsonRestRequest(apiEndPoint, "DELETE", apiRequestHeadersMap);
 
         Assert.assertEquals(esbRestResponse.getHttpStatusCode(), apiRestResponse.getHttpStatusCode());
-
     }
 
     /**
@@ -1326,7 +1284,6 @@ public class RedmineConnectorIntegrationTest extends ConnectorIntegrationTestBas
                 .getBody().getJSONObject("time_entry").get("hours"));
         Assert.assertEquals(esbRestResponse.getBody().getJSONObject("time_entry").get("spent_on"), apiRestResponse
                 .getBody().getJSONObject("time_entry").get("spent_on"));
-
     }
 
     /**
@@ -1344,7 +1301,6 @@ public class RedmineConnectorIntegrationTest extends ConnectorIntegrationTestBas
         final RestResponse<JSONObject> apiRestResponse = sendJsonRestRequest(apiEndPoint, "GET", apiRequestHeadersMap);
 
         Assert.assertEquals(esbRestResponse.getHttpStatusCode(), apiRestResponse.getHttpStatusCode());
-
     }
 
     /**
@@ -1381,4 +1337,185 @@ public class RedmineConnectorIntegrationTest extends ConnectorIntegrationTestBas
         Assert.assertEquals(esbRestResponse.getHttpStatusCode(), apiRestResponse.getHttpStatusCode());
     }
 
+    /**
+     * Positive test case for getGroups method with mandatory parameters.
+     */
+    @Test(priority = 1,groups = {"wso2.esb"}, description = "Redmine {getGroups} integration test with mandatory parameters.")
+    public void testGetGroupsWithMandatoryParameters() throws Exception {
+
+        esbRequestHeadersMap.put("Action", "urn:getGroups");
+
+        RestResponse<JSONObject> esbRestResponse =
+                sendJsonRestRequest(proxyUrl, "POST", esbRequestHeadersMap, "esb_getGroups_mandatory.json",
+                        parametersMap);
+
+        String apiEndPoint = connectorProperties.getProperty("apiUrl") + "/groups.json";
+        RestResponse<JSONObject> apiRestResponse = sendJsonRestRequest(apiEndPoint, "GET", apiRequestHeadersMap);
+        parametersMap.put("groupId", esbRestResponse.getBody().getJSONArray("groups").getJSONObject(0).getString("id"));
+        //parametersMap.put("deleteId", esbRestResponse.getBody().getJSONArray("groups").getJSONObject(1).getString("id"));
+
+        Assert.assertEquals(esbRestResponse.getHttpStatusCode(), 200);
+        Assert.assertEquals(apiRestResponse.getHttpStatusCode(), 200);
+        Assert.assertEquals(esbRestResponse.getBody().getJSONArray("groups").getJSONObject(0).get("id"),
+                apiRestResponse.getBody().getJSONArray("groups").getJSONObject(0).get("id"));
+    }
+
+    /**
+     * Positive test case for getSingleGroups method with mandatory parameters.
+     */
+    @Test(groups = {"wso2.esb"}, description = "Redmine {getSingleGroup} integration test with mandatory parameters.")
+    public void testGetSingleGroupsWithMandatoryParameters() throws Exception {
+
+        esbRequestHeadersMap.put("Action", "urn:getSingleGroup");
+
+        RestResponse<JSONObject> esbRestResponse =
+                sendJsonRestRequest(proxyUrl, "POST", esbRequestHeadersMap, "esb_getSingleGroup_mandatory.json",
+                        parametersMap);
+
+        String apiEndPoint = connectorProperties.getProperty("apiUrl") + "/groups/"+parametersMap.get("groupId")+".json";
+        RestResponse<JSONObject> apiRestResponse = sendJsonRestRequest(apiEndPoint, "GET", apiRequestHeadersMap);
+
+        Assert.assertEquals(esbRestResponse.getHttpStatusCode(), 200);
+        Assert.assertEquals(apiRestResponse.getHttpStatusCode(), 200);
+        Assert.assertEquals(esbRestResponse.getBody().toString(),apiRestResponse.getBody().toString());
+    }
+
+    /**
+     * Positive test case for getSingleGroups method with negative parameters.
+     */
+    @Test(groups = {"wso2.esb"}, description = "Redmine {getSingleGroup} integration test with negative parameters.")
+    public void testGetSingleGroupsWithNegativeParameters() throws Exception {
+
+        esbRequestHeadersMap.put("Action", "urn:getSingleGroup");
+
+        RestResponse<JSONObject> esbRestResponse =
+                sendJsonRestRequest(proxyUrl, "POST", esbRequestHeadersMap, "esb_getSingleGroup_negative.json",
+                        parametersMap);
+
+        String apiEndPoint = connectorProperties.getProperty("apiUrl") + "/groups/"+".json";
+        RestResponse<JSONObject> apiRestResponse = sendJsonRestRequest(apiEndPoint, "GET", apiRequestHeadersMap);
+
+        Assert.assertEquals(esbRestResponse.getHttpStatusCode(), 404);
+        Assert.assertEquals(apiRestResponse.getHttpStatusCode(), 404);
+    }
+
+    /**
+     * Positive test case for getSingleGroup method with optional parameters.
+     */
+    @Test(groups = {"wso2.esb"}, description = "Redmine {getSingleGroup} integration test with optional parameters.")
+    public void testGetSingleGroupsWithOptionalParameters() throws Exception {
+
+        esbRequestHeadersMap.put("Action", "urn:getSingleGroup");
+
+        RestResponse<JSONObject> esbRestResponse =
+                sendJsonRestRequest(proxyUrl, "POST", esbRequestHeadersMap, "esb_getSingleGroup_optional.json",
+                        parametersMap);
+
+        String apiEndPoint = connectorProperties.getProperty("apiUrl") + "/groups/"+parametersMap.get("groupId")+".json"+"?include=users";
+        RestResponse<JSONObject> apiRestResponse = sendJsonRestRequest(apiEndPoint, "GET", apiRequestHeadersMap);
+
+        Assert.assertEquals(esbRestResponse.getHttpStatusCode(), 200);
+        Assert.assertEquals(apiRestResponse.getHttpStatusCode(), 200);
+        Assert.assertEquals(esbRestResponse.getBody().toString(),apiRestResponse.getBody().toString());
+    }
+
+    /**
+     * Positive test case for getCustomFields method with mandatory parameters.
+     */
+    @Test(groups = {"wso2.esb"}, description = "Redmine {getCustomFields} integration test with mandatory parameters.")
+    public void testGetCustomFieldsWithOptionalParameters() throws Exception {
+
+        esbRequestHeadersMap.put("Action", "urn:getCustomFields");
+
+        RestResponse<JSONObject> esbRestResponse =
+                sendJsonRestRequest(proxyUrl, "POST", esbRequestHeadersMap, "esb_getCustomFields_mandatory.json",
+                        parametersMap);
+
+        String apiEndPoint = connectorProperties.getProperty("apiUrl") + "/custom_fields.json";
+        RestResponse<JSONObject> apiRestResponse = sendJsonRestRequest(apiEndPoint, "GET", apiRequestHeadersMap);
+
+        Assert.assertEquals(esbRestResponse.getHttpStatusCode(), 200);
+        Assert.assertEquals(apiRestResponse.getHttpStatusCode(), 200);
+        Assert.assertEquals(esbRestResponse.getBody().toString(),apiRestResponse.getBody().toString());
+    }
+
+    /**
+     * Positive test case for createGroup method with mandatory parameters.
+     */
+    @Test(priority = 1, groups = {"wso2.esb"}, description = "Redmine {createGroup} integration test with mandatory parameters.")
+    public void testCreateGroupWithMandatoryParameters() throws Exception {
+
+        esbRequestHeadersMap.put("Action", "urn:createGroup");
+        RestResponse<JSONObject> esbRestResponse = sendJsonRestRequest(proxyUrl, "POST", esbRequestHeadersMap, "esb_createGroup_mandatory.json");
+        groupId = esbRestResponse.getBody().getJSONObject("group").getString("id");
+        connectorProperties.setProperty("groupId",groupId);
+
+        Thread.sleep(Long.parseLong(connectorProperties.getProperty("timeOut")));
+
+        String apiEndPoint = connectorProperties.getProperty("apiUrl") + "/groups/"+groupId+".json";
+        RestResponse<JSONObject> apiRestResponse = sendJsonRestRequest(apiEndPoint, "GET", apiRequestHeadersMap);
+
+        Assert.assertEquals(esbRestResponse.getHttpStatusCode(), 201);
+        Assert.assertEquals(apiRestResponse.getHttpStatusCode(), 200);
+        Assert.assertEquals(esbRestResponse.getBody().toString(),apiRestResponse.getBody().toString());
+    }
+
+    /**
+     * Positive test case for createGroup method with optional parameters.
+     */
+    @Test(priority = 1, groups = {"wso2.esb"}, description = "Redmine {createGroup} integration test with optional parameters.")
+    public void testCreateGroupWithOptionalParameters() throws Exception {
+
+        esbRequestHeadersMap.put("Action", "urn:createGroup");
+        RestResponse<JSONObject> esbRestResponse = sendJsonRestRequest(proxyUrl, "POST", esbRequestHeadersMap, "esb_createGroup_optional.json");
+        groupId = esbRestResponse.getBody().getJSONObject("group").getString("id");
+
+        Thread.sleep(Long.parseLong(connectorProperties.getProperty("timeOut")));
+
+        String apiEndPoint = connectorProperties.getProperty("apiUrl") + "/groups/"+groupId+".json";
+        RestResponse<JSONObject> apiRestResponse = sendJsonRestRequest(apiEndPoint, "GET", apiRequestHeadersMap);
+
+        Assert.assertEquals(esbRestResponse.getHttpStatusCode(), 201);
+        Assert.assertEquals(apiRestResponse.getHttpStatusCode(), 200);
+        Assert.assertEquals(esbRestResponse.getBody().toString(),apiRestResponse.getBody().toString());
+    }
+
+    //it won't work due to empty response body.
+    /**
+     * Positive test case for deleteGroup method with mandatory parameters.
+     */
+    @Test(priority = 2, groups = {"wso2.esb"}, description = "Redmine {deleteGroup} integration test with mandatory parameters.")
+    public void testDeleteGroupWithMandatoryParameters() throws Exception {
+
+        esbRequestHeadersMap.put("Action", "urn:deleteGroup");
+
+        RestResponse<JSONObject> esbRestResponse = sendJsonRestRequest(proxyUrl, "POST", esbRequestHeadersMap, "esb_deleteGroup_mandatory.json");
+
+        Thread.sleep(Long.parseLong(connectorProperties.getProperty("timeOut")));
+
+        String apiEndPoint = connectorProperties.getProperty("apiUrl") + "/groups/" + connectorProperties.getProperty("groupId") + ".json";
+        RestResponse<JSONObject> apiRestResponse = sendJsonRestRequest(apiEndPoint, "GET", apiRequestHeadersMap);
+
+        Assert.assertEquals(esbRestResponse.getHttpStatusCode(), 200);
+        Assert.assertEquals(apiRestResponse.getHttpStatusCode(), 404);
+    }
+
+    //it won't work due to empty response body.
+    /**
+     * Positive test case for addUserToGroup method with mandatory parameters.
+     */
+    @Test(priority = 1, groups = {"wso2.esb"}, description = "Redmine {addUserToGroup} integration test with mandatory parameters.")
+    public void testAddUserToGroupWithMandatoryParameters() throws Exception {
+
+        esbRequestHeadersMap.put("Action", "urn:addUserToGroup");
+        RestResponse<JSONObject> esbRestResponse = sendJsonRestRequest(proxyUrl, "POST", esbRequestHeadersMap, "esb_addUserToGroup_mandatory.json");
+
+        Thread.sleep(Long.parseLong(connectorProperties.getProperty("timeOut")));
+
+        String apiEndPoint = connectorProperties.getProperty("apiUrl") + "/groups/"+connectorProperties.getProperty(groupId)+"/users.json";
+        RestResponse<JSONObject> apiRestResponse = sendJsonRestRequest(apiEndPoint, "POST", apiRequestHeadersMap);
+
+        Assert.assertEquals(esbRestResponse.getHttpStatusCode(), 200);
+        Assert.assertEquals(apiRestResponse.getHttpStatusCode(), 500);
+    }
 }
