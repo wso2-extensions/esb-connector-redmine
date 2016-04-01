@@ -107,6 +107,6 @@ Steps to follow in setting integration test.
 
    
      credential of test account:
-     API URL: http://connector.m.redmine.org
-     username: connector
-     password: esbconnector
+     API URL: http://connect.m.redmine.org
+     username: wso2connector
+     password: wso22016
