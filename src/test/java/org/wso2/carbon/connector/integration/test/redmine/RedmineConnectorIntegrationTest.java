@@ -34,14 +34,10 @@ public class RedmineConnectorIntegrationTest extends ConnectorIntegrationTestBas
     private Map<String, String> apiRequestHeadersMap = new HashMap<String, String>();
     private Map<String, String> parametersMap = new HashMap<String, String>();
 
-    private String userId;
-    private String groupId;
-    private String deleteId;
     private String projectId;
     private String projectIdOptional;
     private String issueId;
     private String optionalIssueId;
-    private String optionalUserId;
     private String timeEntryId1;
     private String timeEntryId2;
     private String timeEntryId3;
@@ -53,53 +49,78 @@ public class RedmineConnectorIntegrationTest extends ConnectorIntegrationTestBas
      */
     @BeforeClass(alwaysRun = true)
     public void setEnvironment() throws Exception {
-        init("redmine-connector-1.0.0");
+        init("redmine-connector-1.0.1-SNAPSHOT");
         esbRequestHeadersMap.put("Accept-Charset", "UTF-8");
         esbRequestHeadersMap.put("Content-Type", "application/json");
 
         apiRequestHeadersMap.putAll(esbRequestHeadersMap);
         apiRequestHeadersMap.put("X-Redmine-API-Key", connectorProperties.getProperty("apiKey"));
+        connectorProperties.put("createProjectOptIdentifier", System.currentTimeMillis()
+                + connectorProperties.getProperty("createProjectOptIdentifier"));
+        connectorProperties.put("createProjectIdentifier", System.currentTimeMillis()
+                + connectorProperties.getProperty("createProjectIdentifier"));
+        connectorProperties.put("createUserLogin", System.currentTimeMillis()
+                + connectorProperties.getProperty("createUserLogin"));
+        connectorProperties.put("updateUserLogin", System.currentTimeMillis()
+                + connectorProperties.getProperty("updateUserLogin"));
+        connectorProperties.put("createUserMail", System.currentTimeMillis()
+                + connectorProperties.getProperty("createUserMail"));
+        connectorProperties.put("updateUserMail", System.currentTimeMillis()
+                + connectorProperties.getProperty("updateUserMail"));
+        connectorProperties.put("groupName", System.currentTimeMillis() + connectorProperties.getProperty("groupName"));
+        connectorProperties.put("name", System.currentTimeMillis() + connectorProperties.getProperty("name"));
     }
 
     /**
      * Positive test case for createUser method with mandatory parameters.
      */
-    @Test(priority = 1, groups = {"wso2.esb"}, description = "Redmine {createUser} integration test with mandatory parameters.")
+    @Test(priority = 1, groups = {"wso2.esb"},
+            description = "Redmine {createUser} integration test with mandatory parameters.")
     public void testCreateUserWithMandatoryParameters() throws Exception {
 
         esbRequestHeadersMap.put("Action", "urn:createUser");
-        RestResponse<JSONObject> esbRestResponse = sendJsonRestRequest(proxyUrl, "POST", esbRequestHeadersMap, "esb_createUser_mandatory.json");
-        userId = esbRestResponse.getBody().getJSONObject("user").getString("id");
-        connectorProperties.setProperty("userId",userId);
+        RestResponse<JSONObject> esbRestResponse = sendJsonRestRequest(proxyUrl, "POST", esbRequestHeadersMap,
+                "esb_createUser_mandatory.json");
+        String userId = esbRestResponse.getBody().getJSONObject("user").getString("id");
+        connectorProperties.setProperty("userId", userId);
 
         Thread.sleep(Long.parseLong(connectorProperties.getProperty("timeOut")));
 
-        String apiEndPoint = connectorProperties.getProperty("apiUrl") + "/users/" + connectorProperties.getProperty("userId") + ".json";
+        String apiEndPoint = connectorProperties.getProperty("apiUrl") + "/users/"
+                + connectorProperties.getProperty("userId") + ".json";
         RestResponse<JSONObject> apiRestResponse = sendJsonRestRequest(apiEndPoint, "GET", apiRequestHeadersMap);
 
-        Assert.assertEquals(esbRestResponse.getBody().getJSONObject("user").get("id"), apiRestResponse.getBody().getJSONObject("user").get("id"));
-        Assert.assertEquals(esbRestResponse.getBody().getJSONObject("user").get("login"), apiRestResponse.getBody().getJSONObject("user").get("login"));
-        Assert.assertEquals(esbRestResponse.getBody().getJSONObject("user").get("mail"), apiRestResponse.getBody().getJSONObject("user").get("mail"));
+        Assert.assertEquals(esbRestResponse.getBody().getJSONObject("user").get("id"),
+                apiRestResponse.getBody().getJSONObject("user").get("id"));
+        Assert.assertEquals(esbRestResponse.getBody().getJSONObject("user").get("login"),
+                apiRestResponse.getBody().getJSONObject("user").get("login"));
+        Assert.assertEquals(esbRestResponse.getBody().getJSONObject("user").get("mail"),
+                apiRestResponse.getBody().getJSONObject("user").get("mail"));
     }
 
     /**
      * Optional test case for createUser method with mandatory parameters.
      */
-    @Test(priority = 1, groups = {"wso2.esb"}, description = "Redmine {createUser} integration test with mandatory parameters.")
+    @Test(priority = 1, groups = {"wso2.esb"},
+            description = "Redmine {createUser} integration test with mandatory parameters.")
     public void testCreateUserWithOptionalParameters() throws Exception {
 
         esbRequestHeadersMap.put("Action", "urn:createUser");
-        RestResponse<JSONObject> esbRestResponse = sendJsonRestRequest(proxyUrl, "POST", esbRequestHeadersMap, "esb_createUser_optional.json");
-        optionalUserId = esbRestResponse.getBody().getJSONObject("user").getString("id");
-
+        RestResponse<JSONObject> esbRestResponse = sendJsonRestRequest(proxyUrl, "POST", esbRequestHeadersMap,
+                "esb_createUser_optional.json");
+        String optionalUserId = esbRestResponse.getBody().getJSONObject("user").getString("id");
+        connectorProperties.setProperty("optionalUserId", optionalUserId);
         Thread.sleep(Long.parseLong(connectorProperties.getProperty("timeOut")));
 
         String apiEndPoint = connectorProperties.getProperty("apiUrl") + "/users/" + optionalUserId + ".json";
         RestResponse<JSONObject> apiRestResponse = sendJsonRestRequest(apiEndPoint, "GET", apiRequestHeadersMap);
 
-        Assert.assertEquals(esbRestResponse.getBody().getJSONObject("user").get("id"), apiRestResponse.getBody().getJSONObject("user").get("id"));
-        Assert.assertEquals(esbRestResponse.getBody().getJSONObject("user").get("login"), apiRestResponse.getBody().getJSONObject("user").get("login"));
-        Assert.assertEquals(esbRestResponse.getBody().getJSONObject("user").get("mail"), apiRestResponse.getBody().getJSONObject("user").get("mail"));
+        Assert.assertEquals(esbRestResponse.getBody().getJSONObject("user").get("id"),
+                apiRestResponse.getBody().getJSONObject("user").get("id"));
+        Assert.assertEquals(esbRestResponse.getBody().getJSONObject("user").get("login"),
+                apiRestResponse.getBody().getJSONObject("user").get("login"));
+        Assert.assertEquals(esbRestResponse.getBody().getJSONObject("user").get("mail"),
+                apiRestResponse.getBody().getJSONObject("user").get("mail"));
     }
 
     /**
@@ -109,50 +130,63 @@ public class RedmineConnectorIntegrationTest extends ConnectorIntegrationTestBas
     public void testCreateUserNegativeCase() throws Exception {
 
         esbRequestHeadersMap.put("Action", "urn:createUser");
-        RestResponse<JSONObject> esbRestResponse = sendJsonRestRequest(proxyUrl, "POST", esbRequestHeadersMap, "esb_createUser_negative.json");
+        RestResponse<JSONObject> esbRestResponse = sendJsonRestRequest(proxyUrl, "POST", esbRequestHeadersMap,
+                "esb_createUser_negative.json");
 
         String apiEndPoint = connectorProperties.getProperty("apiUrl") + "/users.json";
-        RestResponse<JSONObject> apiRestResponse = sendJsonRestRequest(apiEndPoint, "POST", apiRequestHeadersMap, "api_createUser_negative.json");
-
+        RestResponse<JSONObject> apiRestResponse = sendJsonRestRequest(apiEndPoint, "POST",
+                apiRequestHeadersMap, "api_createUser_negative.json");
         Assert.assertEquals(esbRestResponse.getHttpStatusCode(), 422);
         Assert.assertEquals(esbRestResponse.getHttpStatusCode(), apiRestResponse.getHttpStatusCode());
-        Assert.assertEquals(esbRestResponse.getBody().toString().contains("errors"), apiRestResponse.getBody().toString().contains("errors"));
+        Assert.assertEquals(esbRestResponse.getBody().toString().contains("error_message"),
+                apiRestResponse.getBody().toString().contains("errors"));
     }
 
     /**
      * Positive test case for getUser method with mandatory parameters.
      */
-    @Test(dependsOnMethods = {"testCreateUserWithMandatoryParameters"}, groups = {"wso2.esb"}, description = "Redmine {getUser} integration test with mandatory parameters.")
+    @Test(dependsOnMethods = {"testCreateUserWithMandatoryParameters"}, groups = {"wso2.esb"},
+            description = "Redmine {getUser} integration test with mandatory parameters.")
     public void testGetUserWithMandatoryParameters() throws Exception {
 
         esbRequestHeadersMap.put("Action", "urn:getUser");
+        String userId = connectorProperties.getProperty("userId");
         parametersMap.put("userId", userId);
-        RestResponse<JSONObject> esbRestResponse = sendJsonRestRequest(proxyUrl, "POST", esbRequestHeadersMap, "esb_getUser_mandatory.json", parametersMap);
+        RestResponse<JSONObject> esbRestResponse = sendJsonRestRequest(proxyUrl, "POST", esbRequestHeadersMap,
+                "esb_getUser_mandatory.json", parametersMap);
 
         String apiEndPoint = connectorProperties.getProperty("apiUrl") + "/users/" + userId + ".json";
         RestResponse<JSONObject> apiRestResponse = sendJsonRestRequest(apiEndPoint, "GET", apiRequestHeadersMap);
 
-        Assert.assertEquals(esbRestResponse.getBody().getJSONObject("user").get("id"), apiRestResponse.getBody().getJSONObject("user").get("id"));
-        Assert.assertEquals(esbRestResponse.getBody().getJSONObject("user").get("login"), apiRestResponse.getBody().getJSONObject("user").get("login"));
+        Assert.assertEquals(esbRestResponse.getBody().getJSONObject("user").get("id"),
+                apiRestResponse.getBody().getJSONObject("user").get("id"));
+        Assert.assertEquals(esbRestResponse.getBody().getJSONObject("user").get("login"),
+                apiRestResponse.getBody().getJSONObject("user").get("login"));
         Assert.assertEquals(esbRestResponse.getHttpStatusCode(), apiRestResponse.getHttpStatusCode());
     }
 
     /**
      * Positive test case for getUser method with optional parameters.
      */
-    @Test(groups = {"wso2.esb"}, dependsOnMethods = {"testCreateUserWithMandatoryParameters"}, description = "Redmine {getUser} integration test with optional parameters.")
+    @Test(groups = {"wso2.esb"}, dependsOnMethods = {"testCreateUserWithMandatoryParameters"},
+            description = "Redmine {getUser} integration test with optional parameters.")
     public void testGetUserWithOptionalParameters() throws Exception {
 
         esbRequestHeadersMap.put("Action", "urn:getUser");
+        String userId = connectorProperties.getProperty("userId");
         parametersMap.put("userId", userId);
-        RestResponse<JSONObject> esbRestResponse = sendJsonRestRequest(proxyUrl, "POST", esbRequestHeadersMap, "esb_getUser_optional.json", parametersMap);
+        RestResponse<JSONObject> esbRestResponse = sendJsonRestRequest(proxyUrl, "POST", esbRequestHeadersMap,
+                "esb_getUser_optional.json", parametersMap);
 
-        String apiEndPoint = connectorProperties.getProperty("apiUrl") + "/users/" + userId + ".json?include=groups,memberships";
+        String apiEndPoint = connectorProperties.getProperty("apiUrl") + "/users/" + userId
+                + ".json?include=groups,memberships";
         RestResponse<JSONObject> apiRestResponse = sendJsonRestRequest(apiEndPoint, "GET", apiRequestHeadersMap);
 
         Assert.assertEquals(esbRestResponse.getHttpStatusCode(), apiRestResponse.getHttpStatusCode());
-        Assert.assertEquals(esbRestResponse.getBody().getJSONObject("user").get("id"), apiRestResponse.getBody().getJSONObject("user").get("id"));
-        Assert.assertEquals(esbRestResponse.getBody().getJSONObject("user").get("login"), apiRestResponse.getBody().getJSONObject("user").get("login"));
+        Assert.assertEquals(esbRestResponse.getBody().getJSONObject("user").get("id"),
+                apiRestResponse.getBody().getJSONObject("user").get("id"));
+        Assert.assertEquals(esbRestResponse.getBody().getJSONObject("user").get("login"),
+                apiRestResponse.getBody().getJSONObject("user").get("login"));
         Assert.assertEquals(esbRestResponse.getBody().getJSONObject("user").getJSONArray("groups").toString(),
                 apiRestResponse.getBody().getJSONObject("user").getJSONArray("groups").toString());
     }
@@ -160,13 +194,16 @@ public class RedmineConnectorIntegrationTest extends ConnectorIntegrationTestBas
     /**
      * Negative test case for getUser method with mandatory parameters.
      */
-    @Test(dependsOnMethods = {"testCreateUserWithMandatoryParameters"}, groups = {"wso2.esb"}, description = "Redmine {getUser} integration test negative case.")
+    @Test(dependsOnMethods = {"testCreateUserWithMandatoryParameters"}, groups = {"wso2.esb"},
+            description = "Redmine {getUser} integration test negative case.")
     public void testGetUserNegativeCase() throws Exception {
 
+        String userId = connectorProperties.getProperty("userId");
         String invalidUserId = "garbage_string21341231321afd" + userId;
         esbRequestHeadersMap.put("Action", "urn:getUser");
         parametersMap.put("userId", invalidUserId);
-        RestResponse<JSONObject> esbRestResponse = sendJsonRestRequest(proxyUrl, "POST", esbRequestHeadersMap, "esb_getUser_negative.json", parametersMap);
+        RestResponse<JSONObject> esbRestResponse = sendJsonRestRequest(proxyUrl, "POST", esbRequestHeadersMap,
+                "esb_getUser_negative.json", parametersMap);
 
         String apiEndPoint = connectorProperties.getProperty("apiUrl") + "/users/" + invalidUserId + ".json";
         RestResponse<JSONObject> apiRestResponse = sendJsonRestRequest(apiEndPoint, "GET", apiRequestHeadersMap);
@@ -182,11 +219,14 @@ public class RedmineConnectorIntegrationTest extends ConnectorIntegrationTestBas
     public void testListUsersWithMandatoryParameters() throws Exception {
 
         esbRequestHeadersMap.put("Action", "urn:listUsers");
-        RestResponse<JSONObject> esbRestResponse = sendJsonRestRequest(proxyUrl, "POST", esbRequestHeadersMap, "esb_listUsers_mandatory.json");
+        RestResponse<JSONObject> esbRestResponse = sendJsonRestRequest(proxyUrl, "POST", esbRequestHeadersMap,
+                "esb_listUsers_mandatory.json");
 
         String apiEndPoint = connectorProperties.getProperty("apiUrl") + "/users.json";
         RestResponse<JSONObject> apiRestResponse = sendJsonRestRequest(apiEndPoint, "GET", apiRequestHeadersMap);
-
+        String userIds = esbRestResponse.getBody().getJSONArray("users").getJSONObject(0).get("id") + ","
+                + esbRestResponse.getBody().getJSONArray("users").getJSONObject(1).get("id");
+        connectorProperties.setProperty("userIds", userIds);
         Assert.assertEquals(esbRestResponse.getHttpStatusCode(), apiRestResponse.getHttpStatusCode());
         Assert.assertEquals(esbRestResponse.getBody().get("total_count"), apiRestResponse.getBody().get("total_count"));
         Assert.assertEquals(esbRestResponse.getBody().getJSONArray("users").getJSONObject(0).get("id"),
@@ -201,7 +241,8 @@ public class RedmineConnectorIntegrationTest extends ConnectorIntegrationTestBas
     public void testListUsersWithOptionalParameters() throws Exception {
 
         esbRequestHeadersMap.put("Action", "urn:listUsers");
-        RestResponse<JSONObject> esbRestResponse = sendJsonRestRequest(proxyUrl, "POST", esbRequestHeadersMap, "esb_listUsers_optional.json");
+        RestResponse<JSONObject> esbRestResponse = sendJsonRestRequest(proxyUrl, "POST", esbRequestHeadersMap,
+                "esb_listUsers_optional.json");
 
         String apiEndPoint = connectorProperties.getProperty("apiUrl") + "/users.json?status=1&name="
                 + connectorProperties.getProperty("createUserLogin");
@@ -220,7 +261,8 @@ public class RedmineConnectorIntegrationTest extends ConnectorIntegrationTestBas
             groups = {"wso2.esb"}, description = "Redmine {listUsers} integration test negative case.")
     public void testListUsersNegativeCase() throws Exception {
         esbRequestHeadersMap.put("Action", "urn:listUsers");
-        RestResponse<JSONObject> esbRestResponse = sendJsonRestRequest(proxyUrl, "POST", esbRequestHeadersMap, "esb_listUsers_negative.json");
+        RestResponse<JSONObject> esbRestResponse = sendJsonRestRequest(proxyUrl, "POST", esbRequestHeadersMap,
+                "esb_listUsers_negative.json");
 
         Assert.assertEquals(esbRestResponse.getHttpStatusCode(), 401);
     }
@@ -228,12 +270,15 @@ public class RedmineConnectorIntegrationTest extends ConnectorIntegrationTestBas
     /**
      * Positive test case for updateUser method with mandatory parameters.
      */
-    @Test(dependsOnMethods = {"testCreateUserWithMandatoryParameters"}, groups = {"wso2.esb"}, description = "Redmine {updateUser} integration test with mandatory parameters.")
+    @Test(dependsOnMethods = {"testCreateUserWithMandatoryParameters"}, groups = {"wso2.esb"},
+            description = "Redmine {updateUser} integration test with mandatory parameters.")
     public void testUpdateUserWithMandatoryParameters() throws Exception {
 
         esbRequestHeadersMap.put("Action", "urn:updateUser");
+        String userId = connectorProperties.getProperty("userId");
         parametersMap.put("userId", userId);
-        RestResponse<JSONObject> esbRestResponse = sendJsonRestRequest(proxyUrl, "POST", esbRequestHeadersMap, "esb_updateUser_mandatory.json", parametersMap);
+        RestResponse<JSONObject> esbRestResponse = sendJsonRestRequest(proxyUrl, "POST", esbRequestHeadersMap,
+                "esb_updateUser_mandatory.json", parametersMap);
 
         Thread.sleep(Long.parseLong(connectorProperties.getProperty("timeOut")));
 
@@ -242,19 +287,24 @@ public class RedmineConnectorIntegrationTest extends ConnectorIntegrationTestBas
 
         Assert.assertEquals(esbRestResponse.getHttpStatusCode(), 200);
         Assert.assertEquals(apiRestResponse.getBody().getJSONObject("user").getString("id"), userId);
-        Assert.assertEquals(apiRestResponse.getBody().getJSONObject("user").get("login"), connectorProperties.getProperty("updateUserLogin"));
-        Assert.assertEquals(apiRestResponse.getBody().getJSONObject("user").get("mail"), connectorProperties.getProperty("updateUserMail"));
+        Assert.assertEquals(apiRestResponse.getBody().getJSONObject("user").get("login"),
+                connectorProperties.getProperty("updateUserLogin"));
+        Assert.assertEquals(apiRestResponse.getBody().getJSONObject("user").get("mail"),
+                connectorProperties.getProperty("updateUserMail"));
     }
 
     /**
      * Positive test case for updateUser method with optional parameters.
      */
-    @Test(dependsOnMethods = {"testCreateUserWithMandatoryParameters"}, groups = {"wso2.esb"}, description = "Redmine {updateUser} integration test with optional parameters.")
+    @Test(dependsOnMethods = {"testUpdateUserWithMandatoryParameters"}, groups = {"wso2.esb"},
+            description = "Redmine {updateUser} integration test with optional parameters.")
     public void testUpdateUserWithOptionalParameters() throws Exception {
 
         esbRequestHeadersMap.put("Action", "urn:updateUser");
+        String userId = connectorProperties.getProperty("userId");
         parametersMap.put("userId", userId);
-        RestResponse<JSONObject> esbRestResponse = sendJsonRestRequest(proxyUrl, "POST", esbRequestHeadersMap, "esb_updateUser_optional.json", parametersMap);
+        RestResponse<JSONObject> esbRestResponse = sendJsonRestRequest(proxyUrl, "POST", esbRequestHeadersMap,
+                "esb_updateUser_optional.json", parametersMap);
 
         Thread.sleep(Long.parseLong(connectorProperties.getProperty("timeOut")));
 
@@ -268,30 +318,38 @@ public class RedmineConnectorIntegrationTest extends ConnectorIntegrationTestBas
     /**
      * Negative test case for updateUser method.
      */
-    @Test(dependsOnMethods = {"testCreateUserWithMandatoryParameters"}, groups = {"wso2.esb"}, description = "Redmine {updateUser} integration test for negative case.")
+    @Test(dependsOnMethods = {"testUpdateUserWithOptionalParameters"}, groups = {"wso2.esb"},
+            description = "Redmine {updateUser} integration test for negative case.")
     public void testUpdateUserNegativeCase() throws Exception {
 
         esbRequestHeadersMap.put("Action", "urn:updateUser");
+        String userId = connectorProperties.getProperty("userId");
         parametersMap.put("userId", userId);
-        RestResponse<JSONObject> esbRestResponse = sendJsonRestRequest(proxyUrl, "POST", esbRequestHeadersMap, "esb_updateUser_negative.json", parametersMap);
+        RestResponse<JSONObject> esbRestResponse = sendJsonRestRequest(proxyUrl, "POST", esbRequestHeadersMap,
+                "esb_updateUser_negative.json", parametersMap);
 
         String apiEndPoint = connectorProperties.getProperty("apiUrl") + "/users/" + userId + ".json";
-        RestResponse<JSONObject> apiRestResponse = sendJsonRestRequest(apiEndPoint, "PUT", apiRequestHeadersMap, "api_updateUser_negative.json");
+        RestResponse<JSONObject> apiRestResponse = sendJsonRestRequest(apiEndPoint, "PUT", apiRequestHeadersMap,
+                "api_updateUser_negative.json");
 
+        Assert.assertEquals(apiRestResponse.getHttpStatusCode(), 422);
         Assert.assertEquals(esbRestResponse.getHttpStatusCode(), 422);
-        Assert.assertEquals(esbRestResponse.getHttpStatusCode(), apiRestResponse.getHttpStatusCode());
-        Assert.assertEquals(esbRestResponse.getBody().toString().contains("errors"), apiRestResponse.getBody().toString().contains("errors"));
+        Assert.assertEquals(esbRestResponse.getBody().toString().contains("error_message"),
+                apiRestResponse.getBody().toString().contains("errors"));
     }
 
     /**
      * Positive test case for deleteUser method with mandatory parameters.
      */
-    @Test(priority = 2, groups = {"wso2.esb"}, description = "Redmine {deleteUser} integration test with mandatory parameters.")
+    @Test(priority = 2, dependsOnMethods = {"testAddUserToGroupWithMandatoryParameters", "testUpdateUserNegativeCase"},
+            groups = {"wso2.esb"}, description = "Redmine {deleteUser} integration test with mandatory parameters.")
     public void testDeleteUserWithMandatoryParameters() throws Exception {
 
         esbRequestHeadersMap.put("Action", "urn:deleteUser");
+        String userId = connectorProperties.getProperty("userId");
         //parametersMap.put("userId", userId);
-        RestResponse<JSONObject> esbRestResponse = sendJsonRestRequest(proxyUrl, "POST", esbRequestHeadersMap, "esb_deleteUser_mandatory.json", parametersMap);
+        RestResponse<JSONObject> esbRestResponse = sendJsonRestRequest(proxyUrl, "POST", esbRequestHeadersMap,
+                "esb_deleteUser_mandatory.json", parametersMap);
 
         Thread.sleep(Long.parseLong(connectorProperties.getProperty("timeOut")));
 
@@ -308,10 +366,12 @@ public class RedmineConnectorIntegrationTest extends ConnectorIntegrationTestBas
     @Test(priority = 2, groups = {"wso2.esb"}, description = "Redmine {deleteUser} integration test negative case.")
     public void testDeleteUserNegativeCase() throws Exception {
 
+        String userId = connectorProperties.getProperty("userId");
         String invalidUserId = "garbage_string21341231321" + userId;
         esbRequestHeadersMap.put("Action", "urn:deleteUser");
         parametersMap.put("userId", invalidUserId);
-        RestResponse<JSONObject> esbRestResponse = sendJsonRestRequest(proxyUrl, "POST", esbRequestHeadersMap, "esb_deleteUser_negative.json",
+        RestResponse<JSONObject> esbRestResponse = sendJsonRestRequest(proxyUrl, "POST", esbRequestHeadersMap,
+                "esb_deleteUser_negative.json",
                 parametersMap);
 
         String apiEndPoint = connectorProperties.getProperty("apiUrl") + "/users/" + invalidUserId + ".json";
@@ -324,7 +384,8 @@ public class RedmineConnectorIntegrationTest extends ConnectorIntegrationTestBas
     /**
      * Positive test case for getAttachment method with mandatory parameters.
      */
-    @Test(dependsOnMethods = {"testGetIssueWithOptionalParameters"}, groups = {"wso2.esb"}, description = "Redmine {getAttachment} integration test with mandatory parameters.")
+    @Test(dependsOnMethods = {"testGetIssueWithOptionalParameters"}, groups = {"wso2.esb"},
+            description = "Redmine {getAttachment} integration test with mandatory parameters.")
     public void testGetAttachmentWithMandatoryParameters() throws Exception {
 
         esbRequestHeadersMap.put("Action", "urn:getAttachment");
@@ -346,7 +407,8 @@ public class RedmineConnectorIntegrationTest extends ConnectorIntegrationTestBas
     /**
      * Negative test case for getAttachment method.
      */
-    @Test(dependsOnMethods = {"testGetIssueWithOptionalParameters"}, groups = {"wso2.esb"}, description = "Redmine {getAttachment} integration test negative case.")
+    @Test(dependsOnMethods = {"testGetIssueWithOptionalParameters"}, groups = {"wso2.esb"},
+            description = "Redmine {getAttachment} integration test negative case.")
     public void testGetAttachmentNegativeCase() throws Exception {
 
         String invalidAttachmentId = "garbage_value21341231321afd";
@@ -366,7 +428,8 @@ public class RedmineConnectorIntegrationTest extends ConnectorIntegrationTestBas
     /**
      * Positive test case for addAttachment method with mandatory parameters.
      */
-    @Test(dependsOnMethods = {"testCreateUserWithMandatoryParameters"}, groups = {"wso2.esb"}, description = "Redmine {addAttachment} integration test with mandatory parameters.")
+    @Test(dependsOnMethods = {"testCreateUserWithMandatoryParameters"}, groups = {"wso2.esb"},
+            description = "Redmine {addAttachment} integration test with mandatory parameters.")
     public void testAddAttachmentWithMandatoryParameters() throws Exception {
 
         Map<String, String> attachmentHeadersMap = new HashMap<String, String>();
@@ -392,7 +455,8 @@ public class RedmineConnectorIntegrationTest extends ConnectorIntegrationTestBas
     /**
      * Negative test case for addAttachment method.
      */
-    @Test(dependsOnMethods = {"testCreateUserWithMandatoryParameters"}, groups = {"wso2.esb"}, description = "Redmine {addAttachment} integration test negative case.")
+    @Test(dependsOnMethods = {"testCreateUserWithMandatoryParameters"}, groups = {"wso2.esb"},
+            description = "Redmine {addAttachment} integration test negative case.")
     public void testAddAttachmentNegativeCase() throws Exception {
 
         Map<String, String> attachmentHeadersMap = new HashMap<String, String>();
@@ -414,10 +478,12 @@ public class RedmineConnectorIntegrationTest extends ConnectorIntegrationTestBas
         Assert.assertEquals(esbRestResponse.getHttpStatusCode(), 401);
     }
 
+
     /**
      * Positive test case for createProject method with mandatory parameters.
      */
-    @Test(priority = 1, groups = {"wso2.esb"}, description = "Redmine {createProject} integration test with mandatory parameters.")
+    @Test(priority = 1, groups = {"wso2.esb"},
+            description = "Redmine {createProject} integration test with mandatory parameters.")
     public void testCreateProjectWithMandatoryParameters() throws Exception {
 
         esbRequestHeadersMap.put("Action", "urn:createProject");
@@ -441,7 +507,8 @@ public class RedmineConnectorIntegrationTest extends ConnectorIntegrationTestBas
     /**
      * Positive test case for createProject method with optional parameters.
      */
-    @Test(priority = 1, groups = {"wso2.esb"}, description = "Redmine {createProject} integration test with optional parameters.")
+    @Test(priority = 1, groups = {"wso2.esb"},
+            description = "Redmine {createProject} integration test with optional parameters.")
     public void testCreateProjectWithOptionalParameters() throws Exception {
 
         esbRequestHeadersMap.put("Action", "urn:createProject");
@@ -466,7 +533,8 @@ public class RedmineConnectorIntegrationTest extends ConnectorIntegrationTestBas
     /**
      * Negative test case for createProject method.
      */
-    @Test(priority = 1, groups = {"wso2.esb"}, dependsOnMethods = {"testCreateProjectWithMandatoryParameters"}, description = "Redmine {createProject} integration test with negative case.")
+    @Test(priority = 1, groups = {"wso2.esb"}, dependsOnMethods = {"testCreateProjectWithMandatoryParameters"},
+            description = "Redmine {createProject} integration test with negative case.")
     public void testCreateProjectWithNegativeCase() throws Exception {
 
         esbRequestHeadersMap.put("Action", "urn:createProject");
@@ -483,7 +551,8 @@ public class RedmineConnectorIntegrationTest extends ConnectorIntegrationTestBas
     /**
      * Positive test case for getProject method with mandatory parameters.
      */
-    @Test(groups = {"wso2.esb"}, dependsOnMethods = {"testCreateProjectWithMandatoryParameters"}, description = "Redmine {getProject} integration test with mandatory parameters.")
+    @Test(groups = {"wso2.esb"}, dependsOnMethods = {"testCreateProjectWithMandatoryParameters"},
+            description = "Redmine {getProject} integration test with mandatory parameters.")
     public void testGetProjectWithMandatoryParameters() throws Exception {
 
         esbRequestHeadersMap.put("Action", "urn:getProject");
@@ -507,7 +576,8 @@ public class RedmineConnectorIntegrationTest extends ConnectorIntegrationTestBas
     /**
      * Positive test case for getProject method with optional parameters.
      */
-    @Test(groups = {"wso2.esb"}, dependsOnMethods = {"testCreateProjectWithOptionalParameters"}, description = "Redmine {getProject} integration test with optional parameters.")
+    @Test(groups = {"wso2.esb"}, dependsOnMethods = {"testCreateProjectWithOptionalParameters"},
+            description = "Redmine {getProject} integration test with optional parameters.")
     public void testGetProjectWithOptionalParameters() throws Exception {
 
         esbRequestHeadersMap.put("Action", "urn:getProject");
@@ -548,7 +618,8 @@ public class RedmineConnectorIntegrationTest extends ConnectorIntegrationTestBas
     /**
      * Positive test case for updateProject method with mandatory parameters.
      */
-    @Test(groups = {"wso2.esb"}, dependsOnMethods = {"testGetProjectWithMandatoryParameters"}, description = "Redmine {updateProject} integration test with mandatory parameters.")
+    @Test(groups = {"wso2.esb"}, dependsOnMethods = {"testGetProjectWithMandatoryParameters"},
+            description = "Redmine {updateProject} integration test with mandatory parameters.")
     public void testUpdateProjectWithMandatoryParameters() throws Exception {
 
         esbRequestHeadersMap.put("Action", "urn:updateProject");
@@ -571,7 +642,8 @@ public class RedmineConnectorIntegrationTest extends ConnectorIntegrationTestBas
     /**
      * Positive test case for updateProject method with optional parameters.
      */
-    @Test(groups = {"wso2.esb"}, dependsOnMethods = {"testGetProjectWithOptionalParameters"}, description = "Redmine {updateProject} integration test with optional parameters.")
+    @Test(groups = {"wso2.esb"}, dependsOnMethods = {"testGetProjectWithOptionalParameters"},
+            description = "Redmine {updateProject} integration test with optional parameters.")
     public void testUpdateProjectWithOptionalParameters() throws Exception {
 
         esbRequestHeadersMap.put("Action", "urn:updateProject");
@@ -598,7 +670,8 @@ public class RedmineConnectorIntegrationTest extends ConnectorIntegrationTestBas
      * Negative test case for updateProject method with optional parameters.
      */
     @Test(groups = {"wso2.esb"}, dependsOnMethods = {"testUpdateProjectWithMandatoryParameters",
-            "testUpdateProjectWithOptionalParameters"}, description = "Redmine {updateProject} integration test with negative case.")
+            "testUpdateProjectWithOptionalParameters"},
+            description = "Redmine {updateProject} integration test with negative case.")
     public void testUpdateProjectWithNegativeCase() throws Exception {
 
         esbRequestHeadersMap.put("Action", "urn:updateProject");
@@ -616,7 +689,8 @@ public class RedmineConnectorIntegrationTest extends ConnectorIntegrationTestBas
      * Positive test case for listProjects method with mandatory parameters.
      */
     @Test(groups = {"wso2.esb"}, dependsOnMethods = {"testUpdateProjectWithMandatoryParameters",
-            "testUpdateProjectWithOptionalParameters"}, description = "Redmine {listProjects} integration test with mandatory parameters.")
+            "testUpdateProjectWithOptionalParameters"},
+            description = "Redmine {listProjects} integration test with mandatory parameters.")
     public void testListProjectsWithMandatoryParameters() throws Exception {
 
         esbRequestHeadersMap.put("Action", "urn:listProjects");
@@ -635,7 +709,8 @@ public class RedmineConnectorIntegrationTest extends ConnectorIntegrationTestBas
      * Negative test case for listProjects method.
      */
     @Test(groups = {"wso2.esb"}, dependsOnMethods = {"testUpdateProjectWithMandatoryParameters",
-            "testUpdateProjectWithOptionalParameters"}, description = "Redmine {listProjects} integration test with negative case.")
+            "testUpdateProjectWithOptionalParameters"},
+            description = "Redmine {listProjects} integration test with negative case.")
     public void testListProjectsWithNegativeCase() throws Exception {
 
         esbRequestHeadersMap.put("Action", "urn:listProjects");
@@ -654,7 +729,8 @@ public class RedmineConnectorIntegrationTest extends ConnectorIntegrationTestBas
     /**
      * Positive test case for deleteProject method with mandatory parameters.
      */
-    @Test(priority = 4, groups = {"wso2.esb"}, description = "Redmine {deleteProject} integration test with mandatory parameters.")
+    @Test(priority = 4, groups = {"wso2.esb"},
+            description = "Redmine {deleteProject} integration test with mandatory parameters.")
     public void testDeleteProjectWithMandatoryParameters() throws Exception {
 
         esbRequestHeadersMap.put("Action", "urn:deleteProject");
@@ -676,7 +752,8 @@ public class RedmineConnectorIntegrationTest extends ConnectorIntegrationTestBas
     /**
      * Negative test case for deleteProject method.
      */
-    @Test(priority = 4, groups = {"wso2.esb"}, description = "Redmine {deleteProject} integration test with negative case.")
+    @Test(priority = 4, groups = {"wso2.esb"},
+            description = "Redmine {deleteProject} integration test with negative case.")
     public void testDeleteProjectWithNegativeCase() throws Exception {
 
         esbRequestHeadersMap.put("Action", "urn:deleteProject");
@@ -698,14 +775,16 @@ public class RedmineConnectorIntegrationTest extends ConnectorIntegrationTestBas
     /**
      * Positive test case for createIssue method with mandatory parameters.
      */
-    @Test(groups = {"wso2.esb"}, dependsOnMethods = {"testCreateProjectWithMandatoryParameters"}, description = "Redmine {createIssue} integration test with mandatory parameters.")
+    @Test(groups = {"wso2.esb"}, dependsOnMethods = {"testCreateProjectWithMandatoryParameters"},
+            description = "Redmine {createIssue} integration test with mandatory parameters.")
     public void testCreateIssueWithMandatoryParameters() throws Exception {
 
         esbRequestHeadersMap.put("Action", "urn:createIssue");
         parametersMap.put("projectId", projectId);
 
         RestResponse<JSONObject> esbRestResponse =
-                sendJsonRestRequest(proxyUrl, "POST", esbRequestHeadersMap, "esb_createIssue_mandatory.json", parametersMap);
+                sendJsonRestRequest(proxyUrl, "POST", esbRequestHeadersMap, "esb_createIssue_mandatory.json",
+                        parametersMap);
         issueId = esbRestResponse.getBody().getJSONObject("issue").getString("id");
 
         Thread.sleep(Long.parseLong(connectorProperties.getProperty("timeOut")));
@@ -717,19 +796,21 @@ public class RedmineConnectorIntegrationTest extends ConnectorIntegrationTestBas
                 .getJSONObject("issue").get("subject"));
         Assert.assertEquals(esbRestResponse.getBody().getJSONObject("issue").get("description"), apiRestResponse
                 .getBody().getJSONObject("issue").get("description"));
-
     }
 
     /**
      * Positive test case for createIssue method with optional parameters.
      */
-    @Test(groups = {"wso2.esb"}, dependsOnMethods = {"testCreateUserWithOptionalParameters", "testCreateProjectWithMandatoryParameters",
-            "testAddAttachmentWithMandatoryParameters"}, description = "Redmine {createIssue} integration test with optional parameters.")
+    @Test(groups = {"wso2.esb"},
+            dependsOnMethods = {"testCreateUserWithOptionalParameters", "testCreateProjectWithMandatoryParameters",
+                    "testAddAttachmentWithMandatoryParameters"},
+            description = "Redmine {createIssue} integration test with optional parameters.")
     public void testCreateIssueWithOptionalParameters() throws Exception {
 
         esbRequestHeadersMap.put("Action", "urn:createIssue");
         parametersMap.put("projectId", projectId);
         parametersMap.put("attachmentToken", attachmentToken);
+        String optionalUserId = connectorProperties.getProperty("optionalUserId");
         parametersMap.put("optionalUserId", optionalUserId);
         RestResponse<JSONObject> esbRestResponse =
                 sendJsonRestRequest(proxyUrl, "POST", esbRequestHeadersMap, "esb_createIssue_optional.json", parametersMap);
@@ -742,8 +823,8 @@ public class RedmineConnectorIntegrationTest extends ConnectorIntegrationTestBas
 
         Assert.assertEquals(esbRestResponse.getBody().getJSONObject("issue").get("subject"), apiRestResponse.getBody()
                 .getJSONObject("issue").get("subject"));
-        Assert.assertEquals(esbRestResponse.getBody().getJSONObject("issue").getJSONObject("fixed_version").get("id"),
-                apiRestResponse.getBody().getJSONObject("issue").getJSONObject("fixed_version").get("id"));
+        Assert.assertEquals(esbRestResponse.getBody().getJSONObject("issue").getJSONObject("status").get("id"),
+                apiRestResponse.getBody().getJSONObject("issue").getJSONObject("status").get("id"));
         Assert.assertEquals(esbRestResponse.getBody().getJSONObject("issue").getString("created_on"),
                 apiRestResponse.getBody().getJSONObject("issue").getString("created_on"));
     }
@@ -751,19 +832,22 @@ public class RedmineConnectorIntegrationTest extends ConnectorIntegrationTestBas
     /**
      * Negative test case for createIssue method with mandatory parameters.
      */
-    @Test(groups = {"wso2.esb"}, dependsOnMethods = {"testCreateProjectWithMandatoryParameters"}, description = "Redmine {createIssue} integration test with negative case.")
+    @Test(groups = {"wso2.esb"}, dependsOnMethods = {"testCreateProjectWithMandatoryParameters"},
+            description = "Redmine {createIssue} integration test with negative case.")
     public void testCreateIssueWithNegativeCase() throws Exception {
 
         esbRequestHeadersMap.put("Action", "urn:createIssue");
         parametersMap.put("projectId", projectId);
 
         RestResponse<JSONObject> esbRestResponse =
-                sendJsonRestRequest(proxyUrl, "POST", esbRequestHeadersMap, "esb_createIssue_negative.json", parametersMap);
+                sendJsonRestRequest(proxyUrl, "POST", esbRequestHeadersMap, "esb_createIssue_negative.json",
+                        parametersMap);
 
         String apiEndPoint = connectorProperties.getProperty("apiUrl") + "/issues.json";
 
         RestResponse<JSONObject> apiRestResponse =
-                sendJsonRestRequest(apiEndPoint, "POST", apiRequestHeadersMap, "api_createIssue_negative.json", parametersMap);
+                sendJsonRestRequest(apiEndPoint, "POST", apiRequestHeadersMap, "api_createIssue_negative.json",
+                        parametersMap);
 
         Assert.assertEquals(esbRestResponse.getHttpStatusCode(), 404);
         Assert.assertEquals(esbRestResponse.getHttpStatusCode(), apiRestResponse.getHttpStatusCode());
@@ -772,7 +856,8 @@ public class RedmineConnectorIntegrationTest extends ConnectorIntegrationTestBas
     /**
      * Positive test case for getIssue method with mandatory parameters.
      */
-    @Test(groups = {"wso2.esb"}, dependsOnMethods = {"testCreateIssueWithMandatoryParameters"}, description = "Redmine {getIssue} integration test with mandatory parameters.")
+    @Test(groups = {"wso2.esb"}, dependsOnMethods = {"testCreateIssueWithMandatoryParameters"},
+            description = "Redmine {getIssue} integration test with mandatory parameters.")
     public void testGetIssueWithMandatoryParameters() throws Exception {
 
         esbRequestHeadersMap.put("Action", "urn:getIssue");
@@ -795,7 +880,8 @@ public class RedmineConnectorIntegrationTest extends ConnectorIntegrationTestBas
     /**
      * Positive test case for getIssue method with optional parameters.
      */
-    @Test(groups = {"wso2.esb"}, dependsOnMethods = {"testCreateIssueWithOptionalParameters"}, description = "Redmine {getIssue} integration test with optional parameters.")
+    @Test(groups = {"wso2.esb"}, dependsOnMethods = {"testCreateIssueWithOptionalParameters"},
+            description = "Redmine {getIssue} integration test with optional parameters.")
     public void testGetIssueWithOptionalParameters() throws Exception {
 
         esbRequestHeadersMap.put("Action", "urn:getIssue");
@@ -824,7 +910,8 @@ public class RedmineConnectorIntegrationTest extends ConnectorIntegrationTestBas
     /**
      * Negative test case for getIssue method with mandatory parameters.
      */
-    @Test(groups = {"wso2.esb"}, dependsOnMethods = {"testCreateIssueWithMandatoryParameters"}, description = "Redmine {getIssue} integration test with mandatory parameters.")
+    @Test(groups = {"wso2.esb"}, dependsOnMethods = {"testCreateIssueWithMandatoryParameters"},
+            description = "Redmine {getIssue} integration test with mandatory parameters.")
     public void testGetIssueWithNegativeCase() throws Exception {
 
         esbRequestHeadersMap.put("Action", "urn:getIssue");
@@ -842,7 +929,8 @@ public class RedmineConnectorIntegrationTest extends ConnectorIntegrationTestBas
     /**
      * Positive test case for updateIssue method with mandatory parameters.
      */
-    @Test(groups = {"wso2.esb"}, dependsOnMethods = {"testGetIssueWithMandatoryParameters"}, description = "Redmine {updateIssue} integration test with mandatory parameters.")
+    @Test(groups = {"wso2.esb"}, dependsOnMethods = {"testGetIssueWithMandatoryParameters"},
+            description = "Redmine {updateIssue} integration test with mandatory parameters.")
     public void testUpdateIssueWithMandatoryParameters() throws Exception {
 
         esbRequestHeadersMap.put("Action", "urn:updateIssue");
@@ -868,13 +956,15 @@ public class RedmineConnectorIntegrationTest extends ConnectorIntegrationTestBas
     /**
      * Positive test case for updateIssue method with optional parameters.
      */
-    @Test(groups = {"wso2.esb"}, dependsOnMethods = {"testGetIssueWithOptionalParameters"}, description = "Redmine {updateIssue} integration test with optional parameters.")
+    @Test(groups = {"wso2.esb"}, dependsOnMethods = {"testGetIssueWithOptionalParameters"},
+            description = "Redmine {updateIssue} integration test with optional parameters.")
     public void testUpdateIssueWithOptionalParameters() throws Exception {
 
         esbRequestHeadersMap.put("Action", "urn:updateIssue");
         parametersMap.put("optionalIssueId", issueId);
         parametersMap.put("projectId", projectId);
         parametersMap.put("attachmentToken", attachmentToken);
+        String optionalUserId = connectorProperties.getProperty("optionalUserId");
         parametersMap.put("optionalUserId", optionalUserId);
 
         final RestResponse<JSONObject> esbRestResponse =
@@ -894,7 +984,8 @@ public class RedmineConnectorIntegrationTest extends ConnectorIntegrationTestBas
     /**
      * Negative test case for updateIssue method.
      */
-    @Test(groups = {"wso2.esb"}, dependsOnMethods = {"testGetIssueWithOptionalParameters"}, description = "Redmine {updateIssue} integration test with negative case.")
+    @Test(groups = {"wso2.esb"}, dependsOnMethods = {"testGetIssueWithOptionalParameters"},
+            description = "Redmine {updateIssue} integration test with negative case.")
     public void testUpdateIssueWithNegativeCase() throws Exception {
 
         esbRequestHeadersMap.put("Action", "urn:updateIssue");
@@ -913,7 +1004,8 @@ public class RedmineConnectorIntegrationTest extends ConnectorIntegrationTestBas
     /**
      * Positive test case for listIssues method with mandatory parameters.
      */
-    @Test(groups = {"wso2.esb"}, dependsOnMethods = {"testUpdateIssueWithMandatoryParameters"}, description = "Redmine {listIssues} integration test with mandatory parameters.")
+    @Test(groups = {"wso2.esb"}, dependsOnMethods = {"testUpdateIssueWithMandatoryParameters"},
+            description = "Redmine {listIssues} integration test with mandatory parameters.")
     public void testListIssuesWithMandatoryParameters() throws Exception {
 
         esbRequestHeadersMap.put("Action", "urn:listIssues");
@@ -931,7 +1023,8 @@ public class RedmineConnectorIntegrationTest extends ConnectorIntegrationTestBas
     /**
      * Positive test case for listIssues method with optional parameters.
      */
-    @Test(groups = {"wso2.esb"}, dependsOnMethods = {"testUpdateIssueWithMandatoryParameters"}, description = "Redmine {listIssues} integration test with optional parameters.")
+    @Test(groups = {"wso2.esb"}, dependsOnMethods = {"testUpdateIssueWithMandatoryParameters"},
+            description = "Redmine {listIssues} integration test with optional parameters.")
     public void testListIssuesWithOptionalParameters() throws Exception {
 
         esbRequestHeadersMap.put("Action", "urn:listIssues");
@@ -955,7 +1048,8 @@ public class RedmineConnectorIntegrationTest extends ConnectorIntegrationTestBas
     /**
      * Negative test case for listIssues method.
      */
-    @Test(groups = {"wso2.esb"}, dependsOnMethods = {"testUpdateIssueWithMandatoryParameters"}, description = "Redmine {listIssues} integration test with negative case.")
+    @Test(groups = {"wso2.esb"}, dependsOnMethods = {"testUpdateIssueWithMandatoryParameters"},
+            description = "Redmine {listIssues} integration test with negative case.")
     public void testListIssuesWithNegativeCase() throws Exception {
 
         esbRequestHeadersMap.put("Action", "urn:listIssues");
@@ -973,7 +1067,8 @@ public class RedmineConnectorIntegrationTest extends ConnectorIntegrationTestBas
     /**
      * Positive test case for deleteIssue method with mandatory parameters.
      */
-    @Test(priority = 3, groups = {"wso2.esb"}, description = "Redmine {deleteIssue} integration test with mandatory parameters.")
+    @Test(priority = 3, groups = {"wso2.esb"},
+            description = "Redmine {deleteIssue} integration test with mandatory parameters.")
     public void testDeleteIssueWithMandatoryParameters() throws Exception {
 
         esbRequestHeadersMap.put("Action", "urn:deleteIssue");
@@ -1009,7 +1104,8 @@ public class RedmineConnectorIntegrationTest extends ConnectorIntegrationTestBas
     /**
      * Positive test case for createTimeEntry method with mandatory parameters(With only issueId).
      */
-    @Test(groups = {"wso2.esb"}, dependsOnMethods = {"testCreateIssueWithMandatoryParameters"}, description = "Redmine {createTimeEntry} integration test with mandatory parameters.")
+    @Test(groups = {"wso2.esb"}, dependsOnMethods = {"testCreateIssueWithMandatoryParameters"},
+            description = "Redmine {createTimeEntry} integration test with mandatory parameters.")
     public void testCreateTimeEntryWithMandatoryParametersOnlyIssueId() throws Exception {
 
         esbRequestHeadersMap.put("Action", "urn:createTimeEntry");
@@ -1037,7 +1133,8 @@ public class RedmineConnectorIntegrationTest extends ConnectorIntegrationTestBas
     /**
      * Positive test case for createTimeEntry method with mandatory parameters(With only projectId).
      */
-    @Test(dependsOnMethods = {"testCreateProjectWithMandatoryParameters"}, groups = {"wso2.esb"}, description = "Redmine {createTimeEntry} integration test with mandatory parameters.")
+    @Test(dependsOnMethods = {"testCreateProjectWithMandatoryParameters"}, groups = {"wso2.esb"},
+            description = "Redmine {createTimeEntry} integration test with mandatory parameters.")
     public void testCreateTimeEntryWithMandatoryParametersOnlyProjectId() throws Exception {
 
         esbRequestHeadersMap.put("Action", "urn:createTimeEntry");
@@ -1065,7 +1162,8 @@ public class RedmineConnectorIntegrationTest extends ConnectorIntegrationTestBas
     /**
      * Positive test case for createTimeEntry method with optional parameters.
      */
-    @Test(groups = {"wso2.esb"}, dependsOnMethods = {"testCreateIssueWithOptionalParameters"}, description = "Redmine {createTimeEntry} integration test with optional parameters.")
+    @Test(groups = {"wso2.esb"}, dependsOnMethods = {"testCreateIssueWithOptionalParameters"},
+            description = "Redmine {createTimeEntry} integration test with optional parameters.")
     public void testCreateTimeEntryWithOptionalParameters() throws Exception {
 
         esbRequestHeadersMap.put("Action", "urn:createTimeEntry");
@@ -1093,7 +1191,8 @@ public class RedmineConnectorIntegrationTest extends ConnectorIntegrationTestBas
     /**
      * Negative test case for createTimeEntry method.
      */
-    @Test(groups = {"wso2.esb"}, dependsOnMethods = {"testCreateTimeEntryWithMandatoryParametersOnlyIssueId"}, description = "Redmine {createTimeEntry} integration test with negative case.")
+    @Test(groups = {"wso2.esb"}, dependsOnMethods = {"testCreateTimeEntryWithMandatoryParametersOnlyIssueId"},
+            description = "Redmine {createTimeEntry} integration test with negative case.")
     public void testCreateTimeEntryWithNegativeCase() throws Exception {
 
         esbRequestHeadersMap.put("Action", "urn:createTimeEntry");
@@ -1111,7 +1210,8 @@ public class RedmineConnectorIntegrationTest extends ConnectorIntegrationTestBas
     /**
      * Positive test case for updateTimeEntry method with mandatory parameters(With only issueId).
      */
-    @Test(groups = {"wso2.esb"}, dependsOnMethods = {"testCreateTimeEntryWithMandatoryParametersOnlyIssueId"}, description = "Redmine {updateTimeEntry} integration test with mandatory parameters.")
+    @Test(groups = {"wso2.esb"}, dependsOnMethods = {"testCreateTimeEntryWithMandatoryParametersOnlyIssueId"},
+            description = "Redmine {updateTimeEntry} integration test with mandatory parameters.")
     public void testUpdateTimeEntryWithMandatoryParametersOnlyIssueId() throws Exception {
 
         esbRequestHeadersMap.put("Action", "urn:updateTimeEntry");
@@ -1140,7 +1240,8 @@ public class RedmineConnectorIntegrationTest extends ConnectorIntegrationTestBas
     /**
      * Positive test case for updateTimeEntry method with mandatory parameters(With only projectId).
      */
-    @Test(groups = {"wso2.esb"}, dependsOnMethods = {"testCreateTimeEntryWithMandatoryParametersOnlyProjectId"}, description = "Redmine {updateTimeEntry} integration test with mandatory parameters.")
+    @Test(groups = {"wso2.esb"}, dependsOnMethods = {"testCreateTimeEntryWithMandatoryParametersOnlyProjectId"},
+            description = "Redmine {updateTimeEntry} integration test with mandatory parameters.")
     public void testUpdateTimeEntryWithMandatoryParametersOnlyProjectId() throws Exception {
 
         esbRequestHeadersMap.put("Action", "urn:updateTimeEntry");
@@ -1169,7 +1270,8 @@ public class RedmineConnectorIntegrationTest extends ConnectorIntegrationTestBas
     /**
      * Positive test case for updateTimeEntry method with optional parameters.
      */
-    @Test(groups = {"wso2.esb"}, dependsOnMethods = {"testCreateTimeEntryWithOptionalParameters"}, description = "Redmine {updateTimeEntry} integration test with optional parameters.")
+    @Test(groups = {"wso2.esb"}, dependsOnMethods = {"testCreateTimeEntryWithOptionalParameters"},
+            description = "Redmine {updateTimeEntry} integration test with optional parameters.")
     public void testUpdateTimeEntryWithOptionalParameters() throws Exception {
 
         esbRequestHeadersMap.put("Action", "urn:updateTimeEntry");
@@ -1198,7 +1300,8 @@ public class RedmineConnectorIntegrationTest extends ConnectorIntegrationTestBas
     /**
      * Negative test case for updateTimeEntry method.
      */
-    @Test(groups = {"wso2.esb"}, dependsOnMethods = {"testUpdateTimeEntryWithMandatoryParametersOnlyIssueId"}, description = "Redmine {updateTimeEntry} integration test with negative case.")
+    @Test(groups = {"wso2.esb"}, dependsOnMethods = {"testUpdateTimeEntryWithMandatoryParametersOnlyIssueId"},
+            description = "Redmine {updateTimeEntry} integration test with negative case.")
     public void testUpdateTimeEntryWithNegativeCase() throws Exception {
 
         esbRequestHeadersMap.put("Action", "urn:updateTimeEntry");
@@ -1218,7 +1321,8 @@ public class RedmineConnectorIntegrationTest extends ConnectorIntegrationTestBas
     /**
      * Positive test case for deleteTimeEntry method with mandatory parameters.
      */
-    @Test(priority = 2, groups = {"wso2.esb"}, description = "Redmine {deleteTimeEntry} integration test with mandatory parameters.")
+    @Test(priority = 2, groups = {"wso2.esb"},
+            description = "Redmine {deleteTimeEntry} integration test with mandatory parameters.")
     public void testDeleteTimeEntryWithMandatoryParameters() throws Exception {
 
         esbRequestHeadersMap.put("Action", "urn:deleteTimeEntry");
@@ -1241,7 +1345,8 @@ public class RedmineConnectorIntegrationTest extends ConnectorIntegrationTestBas
     /**
      * Negative test case for deleteTimeEntry method.
      */
-    @Test(priority = 2, groups = {"wso2.esb"}, description = "Redmine {deleteTimeEntry} integration test with negative case.")
+    @Test(priority = 2, groups = {"wso2.esb"},
+            description = "Redmine {deleteTimeEntry} integration test with negative case.")
     public void testDeleteTimeEntryWithNegativeCase() throws Exception {
 
         esbRequestHeadersMap.put("Action", "urn:deleteTimeEntry");
@@ -1262,7 +1367,8 @@ public class RedmineConnectorIntegrationTest extends ConnectorIntegrationTestBas
     /**
      * Positive test case for getTimeEntry method with mandatory parameters.
      */
-    @Test(groups = {"wso2.esb"}, dependsOnMethods = {"testCreateTimeEntryWithMandatoryParametersOnlyIssueId"}, description = "Redmine {getTimeEntry} integration test with mandatory parameters.")
+    @Test(groups = {"wso2.esb"}, dependsOnMethods = {"testCreateTimeEntryWithMandatoryParametersOnlyIssueId"},
+            description = "Redmine {getTimeEntry} integration test with mandatory parameters.")
     public void testGetTimeEntryWithMandatoryParameters() throws Exception {
 
         esbRequestHeadersMap.put("Action", "urn:getTimeEntry");
@@ -1289,7 +1395,8 @@ public class RedmineConnectorIntegrationTest extends ConnectorIntegrationTestBas
     /**
      * Negative test case for getTimeEntry method.
      */
-    @Test(groups = {"wso2.esb"}, dependsOnMethods = {"testCreateTimeEntryWithMandatoryParametersOnlyIssueId"}, description = "Redmine {getTimeEntry} integration test with negative case.")
+    @Test(groups = {"wso2.esb"}, dependsOnMethods = {"testCreateTimeEntryWithMandatoryParametersOnlyIssueId"},
+            description = "Redmine {getTimeEntry} integration test with negative case.")
     public void testGetTimeEntryWithNegativeCase() throws Exception {
 
         esbRequestHeadersMap.put("Action", "urn:getTimeEntry");
@@ -1306,7 +1413,8 @@ public class RedmineConnectorIntegrationTest extends ConnectorIntegrationTestBas
     /**
      * Positive test case for listTimeEntries method with mandatory parameters.
      */
-    @Test(groups = {"wso2.esb"}, dependsOnMethods = {"testGetTimeEntryWithMandatoryParameters"}, description = "Redmine {listTimeEntries} integration test with mandatory parameters.")
+    @Test(groups = {"wso2.esb"}, dependsOnMethods = {"testGetTimeEntryWithMandatoryParameters"},
+            description = "Redmine {listTimeEntries} integration test with mandatory parameters.")
     public void testListTimeEntriesWithMandatoryParameters() throws Exception {
 
         esbRequestHeadersMap.put("Action", "urn:listTimeEntries");
@@ -1324,7 +1432,8 @@ public class RedmineConnectorIntegrationTest extends ConnectorIntegrationTestBas
     /**
      * Negative test case for listTimeEntries method.
      */
-    @Test(groups = {"wso2.esb"}, dependsOnMethods = {"testGetTimeEntryWithMandatoryParameters"}, description = "Redmine {listTimeEntries} integration test with negative case.")
+    @Test(groups = {"wso2.esb"}, dependsOnMethods = {"testGetTimeEntryWithMandatoryParameters"},
+            description = "Redmine {listTimeEntries} integration test with negative case.")
     public void testListTimeEntriesWithNegativeCase() throws Exception {
 
         esbRequestHeadersMap.put("Action", "urn:listTimeEntries");
@@ -1340,7 +1449,7 @@ public class RedmineConnectorIntegrationTest extends ConnectorIntegrationTestBas
     /**
      * Positive test case for getGroups method with mandatory parameters.
      */
-    @Test(priority = 1,groups = {"wso2.esb"}, description = "Redmine {getGroups} integration test with mandatory parameters.")
+    @Test(priority = 1, groups = {"wso2.esb"}, description = "Redmine {getGroups} integration test with mandatory parameters.")
     public void testGetGroupsWithMandatoryParameters() throws Exception {
 
         esbRequestHeadersMap.put("Action", "urn:getGroups");
@@ -1352,7 +1461,6 @@ public class RedmineConnectorIntegrationTest extends ConnectorIntegrationTestBas
         String apiEndPoint = connectorProperties.getProperty("apiUrl") + "/groups.json";
         RestResponse<JSONObject> apiRestResponse = sendJsonRestRequest(apiEndPoint, "GET", apiRequestHeadersMap);
         parametersMap.put("groupId", esbRestResponse.getBody().getJSONArray("groups").getJSONObject(0).getString("id"));
-        //parametersMap.put("deleteId", esbRestResponse.getBody().getJSONArray("groups").getJSONObject(1).getString("id"));
 
         Assert.assertEquals(esbRestResponse.getHttpStatusCode(), 200);
         Assert.assertEquals(apiRestResponse.getHttpStatusCode(), 200);
@@ -1363,7 +1471,8 @@ public class RedmineConnectorIntegrationTest extends ConnectorIntegrationTestBas
     /**
      * Positive test case for getSingleGroups method with mandatory parameters.
      */
-    @Test(groups = {"wso2.esb"}, description = "Redmine {getSingleGroup} integration test with mandatory parameters.")
+    @Test(groups = {"wso2.esb"}, dependsOnMethods = {"testCreateGroupWithMandatoryParameters"},
+            description = "Redmine {getSingleGroup} integration test with mandatory parameters.")
     public void testGetSingleGroupsWithMandatoryParameters() throws Exception {
 
         esbRequestHeadersMap.put("Action", "urn:getSingleGroup");
@@ -1372,12 +1481,13 @@ public class RedmineConnectorIntegrationTest extends ConnectorIntegrationTestBas
                 sendJsonRestRequest(proxyUrl, "POST", esbRequestHeadersMap, "esb_getSingleGroup_mandatory.json",
                         parametersMap);
 
-        String apiEndPoint = connectorProperties.getProperty("apiUrl") + "/groups/"+parametersMap.get("groupId")+".json";
+        String apiEndPoint = connectorProperties.getProperty("apiUrl") + "/groups/"
+                + connectorProperties.getProperty("groupId") + ".json";
         RestResponse<JSONObject> apiRestResponse = sendJsonRestRequest(apiEndPoint, "GET", apiRequestHeadersMap);
 
         Assert.assertEquals(esbRestResponse.getHttpStatusCode(), 200);
         Assert.assertEquals(apiRestResponse.getHttpStatusCode(), 200);
-        Assert.assertEquals(esbRestResponse.getBody().toString(),apiRestResponse.getBody().toString());
+        Assert.assertEquals(esbRestResponse.getBody().toString(), apiRestResponse.getBody().toString());
     }
 
     /**
@@ -1392,7 +1502,7 @@ public class RedmineConnectorIntegrationTest extends ConnectorIntegrationTestBas
                 sendJsonRestRequest(proxyUrl, "POST", esbRequestHeadersMap, "esb_getSingleGroup_negative.json",
                         parametersMap);
 
-        String apiEndPoint = connectorProperties.getProperty("apiUrl") + "/groups/"+".json";
+        String apiEndPoint = connectorProperties.getProperty("apiUrl") + "/groups/" + ".json";
         RestResponse<JSONObject> apiRestResponse = sendJsonRestRequest(apiEndPoint, "GET", apiRequestHeadersMap);
 
         Assert.assertEquals(esbRestResponse.getHttpStatusCode(), 404);
@@ -1402,7 +1512,8 @@ public class RedmineConnectorIntegrationTest extends ConnectorIntegrationTestBas
     /**
      * Positive test case for getSingleGroup method with optional parameters.
      */
-    @Test(groups = {"wso2.esb"}, description = "Redmine {getSingleGroup} integration test with optional parameters.")
+    @Test(groups = {"wso2.esb"}, dependsOnMethods = {"testCreateGroupWithMandatoryParameters"},
+            description = "Redmine {getSingleGroup} integration test with optional parameters.")
     public void testGetSingleGroupsWithOptionalParameters() throws Exception {
 
         esbRequestHeadersMap.put("Action", "urn:getSingleGroup");
@@ -1411,12 +1522,13 @@ public class RedmineConnectorIntegrationTest extends ConnectorIntegrationTestBas
                 sendJsonRestRequest(proxyUrl, "POST", esbRequestHeadersMap, "esb_getSingleGroup_optional.json",
                         parametersMap);
 
-        String apiEndPoint = connectorProperties.getProperty("apiUrl") + "/groups/"+parametersMap.get("groupId")+".json"+"?include=users";
+        String apiEndPoint = connectorProperties.getProperty("apiUrl") + "/groups/"
+                + connectorProperties.getProperty("groupId") + ".json" + "?include=users";
         RestResponse<JSONObject> apiRestResponse = sendJsonRestRequest(apiEndPoint, "GET", apiRequestHeadersMap);
 
         Assert.assertEquals(esbRestResponse.getHttpStatusCode(), 200);
         Assert.assertEquals(apiRestResponse.getHttpStatusCode(), 200);
-        Assert.assertEquals(esbRestResponse.getBody().toString(),apiRestResponse.getBody().toString());
+        Assert.assertEquals(esbRestResponse.getBody().toString(), apiRestResponse.getBody().toString());
     }
 
     /**
@@ -1436,86 +1548,89 @@ public class RedmineConnectorIntegrationTest extends ConnectorIntegrationTestBas
 
         Assert.assertEquals(esbRestResponse.getHttpStatusCode(), 200);
         Assert.assertEquals(apiRestResponse.getHttpStatusCode(), 200);
-        Assert.assertEquals(esbRestResponse.getBody().toString(),apiRestResponse.getBody().toString());
+        Assert.assertEquals(esbRestResponse.getBody().toString(), apiRestResponse.getBody().toString());
     }
 
     /**
      * Positive test case for createGroup method with mandatory parameters.
      */
-    @Test(priority = 1, groups = {"wso2.esb"}, description = "Redmine {createGroup} integration test with mandatory parameters.")
+    @Test(priority = 1, dependsOnMethods = {"testListUsersWithMandatoryParameters"}, groups = {"wso2.esb"},
+            description = "Redmine {createGroup} integration test with mandatory parameters.")
     public void testCreateGroupWithMandatoryParameters() throws Exception {
 
         esbRequestHeadersMap.put("Action", "urn:createGroup");
-        RestResponse<JSONObject> esbRestResponse = sendJsonRestRequest(proxyUrl, "POST", esbRequestHeadersMap, "esb_createGroup_mandatory.json");
-        groupId = esbRestResponse.getBody().getJSONObject("group").getString("id");
-        connectorProperties.setProperty("groupId",groupId);
-
+        RestResponse<JSONObject> esbRestResponse = sendJsonRestRequest(proxyUrl, "POST", esbRequestHeadersMap,
+                "esb_createGroup_mandatory.json");
+        String groupId = esbRestResponse.getBody().getJSONObject("group").getString("id");
+        connectorProperties.setProperty("groupId", groupId);
         Thread.sleep(Long.parseLong(connectorProperties.getProperty("timeOut")));
 
-        String apiEndPoint = connectorProperties.getProperty("apiUrl") + "/groups/"+groupId+".json";
+        String apiEndPoint = connectorProperties.getProperty("apiUrl") + "/groups/" + groupId + ".json";
         RestResponse<JSONObject> apiRestResponse = sendJsonRestRequest(apiEndPoint, "GET", apiRequestHeadersMap);
 
         Assert.assertEquals(esbRestResponse.getHttpStatusCode(), 201);
         Assert.assertEquals(apiRestResponse.getHttpStatusCode(), 200);
-        Assert.assertEquals(esbRestResponse.getBody().toString(),apiRestResponse.getBody().toString());
+        Assert.assertEquals(esbRestResponse.getBody().toString(), apiRestResponse.getBody().toString());
     }
 
     /**
      * Positive test case for createGroup method with optional parameters.
      */
-    @Test(priority = 1, groups = {"wso2.esb"}, description = "Redmine {createGroup} integration test with optional parameters.")
+    @Test(priority = 1, groups = {"wso2.esb"}, dependsOnMethods = {"testListUsersWithMandatoryParameters"},
+            description = "Redmine {createGroup} integration test with optional parameters.")
     public void testCreateGroupWithOptionalParameters() throws Exception {
 
         esbRequestHeadersMap.put("Action", "urn:createGroup");
-        RestResponse<JSONObject> esbRestResponse = sendJsonRestRequest(proxyUrl, "POST", esbRequestHeadersMap, "esb_createGroup_optional.json");
-        groupId = esbRestResponse.getBody().getJSONObject("group").getString("id");
+        RestResponse<JSONObject> esbRestResponse = sendJsonRestRequest(proxyUrl, "POST", esbRequestHeadersMap,
+                "esb_createGroup_optional.json");
+        String groupId = esbRestResponse.getBody().getJSONObject("group").getString("id");
 
         Thread.sleep(Long.parseLong(connectorProperties.getProperty("timeOut")));
 
-        String apiEndPoint = connectorProperties.getProperty("apiUrl") + "/groups/"+groupId+".json";
+        String apiEndPoint = connectorProperties.getProperty("apiUrl") + "/groups/" + groupId + ".json";
         RestResponse<JSONObject> apiRestResponse = sendJsonRestRequest(apiEndPoint, "GET", apiRequestHeadersMap);
 
         Assert.assertEquals(esbRestResponse.getHttpStatusCode(), 201);
         Assert.assertEquals(apiRestResponse.getHttpStatusCode(), 200);
-        Assert.assertEquals(esbRestResponse.getBody().toString(),apiRestResponse.getBody().toString());
+        Assert.assertEquals(esbRestResponse.getBody().toString(), apiRestResponse.getBody().toString());
     }
 
-    //it won't work due to empty response body.
     /**
      * Positive test case for deleteGroup method with mandatory parameters.
      */
-    @Test(priority = 2, groups = {"wso2.esb"}, description = "Redmine {deleteGroup} integration test with mandatory parameters.")
+    @Test(priority = 2, dependsOnMethods = {"testCreateGroupWithMandatoryParameters",
+            "testGetSingleGroupsWithMandatoryParameters", "testGetSingleGroupsWithOptionalParameters",
+            "testAddUserToGroupWithMandatoryParameters"}, groups = {"wso2.esb"},
+            description = "Redmine {deleteGroup} integration test with mandatory parameters.")
     public void testDeleteGroupWithMandatoryParameters() throws Exception {
 
         esbRequestHeadersMap.put("Action", "urn:deleteGroup");
 
-        RestResponse<JSONObject> esbRestResponse = sendJsonRestRequest(proxyUrl, "POST", esbRequestHeadersMap, "esb_deleteGroup_mandatory.json");
+        RestResponse<JSONObject> esbRestResponse = sendJsonRestRequest(proxyUrl, "POST", esbRequestHeadersMap,
+                "esb_deleteGroup_mandatory.json");
 
         Thread.sleep(Long.parseLong(connectorProperties.getProperty("timeOut")));
 
-        String apiEndPoint = connectorProperties.getProperty("apiUrl") + "/groups/" + connectorProperties.getProperty("groupId") + ".json";
+        String apiEndPoint = connectorProperties.getProperty("apiUrl") + "/groups/"
+                + connectorProperties.getProperty("groupId") + ".json";
         RestResponse<JSONObject> apiRestResponse = sendJsonRestRequest(apiEndPoint, "GET", apiRequestHeadersMap);
 
         Assert.assertEquals(esbRestResponse.getHttpStatusCode(), 200);
         Assert.assertEquals(apiRestResponse.getHttpStatusCode(), 404);
     }
 
-    //it won't work due to empty response body.
     /**
      * Positive test case for addUserToGroup method with mandatory parameters.
      */
-    @Test(priority = 1, groups = {"wso2.esb"}, description = "Redmine {addUserToGroup} integration test with mandatory parameters.")
+    @Test(priority = 1, dependsOnMethods = {"testCreateGroupWithMandatoryParameters"}, groups = {"wso2.esb"},
+            description = "Redmine {addUserToGroup} integration test with mandatory parameters.")
     public void testAddUserToGroupWithMandatoryParameters() throws Exception {
 
         esbRequestHeadersMap.put("Action", "urn:addUserToGroup");
-        RestResponse<JSONObject> esbRestResponse = sendJsonRestRequest(proxyUrl, "POST", esbRequestHeadersMap, "esb_addUserToGroup_mandatory.json");
+        RestResponse<JSONObject> esbRestResponse = sendJsonRestRequest(proxyUrl, "POST", esbRequestHeadersMap,
+                "esb_addUserToGroup_mandatory.json");
 
         Thread.sleep(Long.parseLong(connectorProperties.getProperty("timeOut")));
-
-        String apiEndPoint = connectorProperties.getProperty("apiUrl") + "/groups/"+connectorProperties.getProperty(groupId)+"/users.json";
-        RestResponse<JSONObject> apiRestResponse = sendJsonRestRequest(apiEndPoint, "POST", apiRequestHeadersMap);
-
         Assert.assertEquals(esbRestResponse.getHttpStatusCode(), 200);
-        Assert.assertEquals(apiRestResponse.getHttpStatusCode(), 500);
     }
 }

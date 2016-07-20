@@ -3,13 +3,13 @@ Product: Integration tests for WSO2 ESB Redmine connector
 
     - Maven 3.x
     - Java 1.6 or above
-    - The org.wso2.esb.integration.integration-base project is required and It will found in https://github.com/wso2-extensions/esb            -integration-base.
+    - The org.wso2.esb.integration.integration-base project is required and It will found in https://github.com/wso2-extensions/esb-integration-base.
 
     Tested Platforms: 
 
     - Microsoft WINDOWS V-7
-    - Ubuntu 13.04
-    - WSO2 ESB 4.9.0
+    - Ubuntu 13.04, Mac OSx 10.9
+    - WSO2 ESB 4.9.0, ESB 5.0.0-BETA
 
 Note:
   This test suite can execute based on two scenarios.
@@ -17,42 +17,38 @@ Note:
     2. Setup new redmine account and follow all the instruction given below
   
 Steps to follow in setting integration test.
- 1.  Download ESB 4.9.0 from official website.
- 
- 2.  Deploy relevant patches, if applicable.
-            
- 3.  Navigate to location "/wso2esb-4.9.0/repository/conf/axis2" and add/uncomment following lines in "axis2.xml" and Message Formatters and Message Builders should be added for each of the content types of the files to be added as attachments.
+ 1.  Download ESB 5.0.0-BETA from official site. Extract the ESB and put "-XX:-UseSplitVerifier" under $JVM_MEM_OPTS into {ESB_HOME}/bin/wso2server.sh.
+
+ 2.  Navigate to location "/wso2esb-5.0.0-BETA/repository/conf/axis2" and add/uncomment following lines in "axis2.xml" and Message Formatters and Message Builders should be added for each of the content types of the files to be added as attachments.
   
-            <messageFormatter contentType="text/javascript" class="org.wso2.carbon.relay.ExpandingMessageFormatter"/>
+         <messageFormatter contentType="text/javascript" class="org.wso2.carbon.relay.ExpandingMessageFormatter"/>
 
-            <messageFormatter contentType="text/html" class="org.wso2.carbon.relay.ExpandingMessageFormatter"/>
+         <messageFormatter contentType="text/html" class="org.wso2.carbon.relay.ExpandingMessageFormatter"/>
 
-            <messageFormatter contentType="application/json" class="org.apache.synapse.commons.json.JsonStreamFormatter"/>
+         <messageFormatter contentType="application/json" class="org.apache.synapse.commons.json.JsonStreamFormatter"/>
 			
-	    <messageBuilder contentType="text/javascript" class="org.wso2.carbon.relay.BinaryRelayBuilder"/>
+         <messageBuilder contentType="text/javascript" class="org.wso2.carbon.relay.BinaryRelayBuilder"/>
 
-            <messageBuilder contentType="text/html" class="org.wso2.carbon.relay.BinaryRelayBuilder"/>
+         <messageBuilder contentType="text/html" class="org.wso2.carbon.relay.BinaryRelayBuilder"/>
 
-	    <messageBuilder contentType="application/json" class="org.apache.synapse.commons.json.JsonStreamBuilder"/>
+         <messageBuilder contentType="application/json" class="org.apache.synapse.commons.json.JsonStreamBuilder"/>
 
- 4.  Based on the content type of the attachment file you are adding in step 7-g-6, add the relevant message formatter and builder.
+ 3.  Based on the content type of the attachment file you are adding in step 5-g-6, add the relevant message formatter and builder.
 
-            e.g. for image/png:
-            <messageFormatter contentType="image/png" class="org.wso2.carbon.relay.ExpandingMessageFormatter"/>
+         e.g. for image/png:
+         <messageFormatter contentType="image/png" class="org.wso2.carbon.relay.ExpandingMessageFormatter"/>
 
-            <messageBuilder contentType="image/png" class="org.wso2.carbon.relay.BinaryRelayBuilder"/>
+         <messageBuilder contentType="image/png" class="org.wso2.carbon.relay.BinaryRelayBuilder"/>
 
+ 4.  Compress modified ESB as wso2esb-5.0.0-BETA zip and copy that zip file in to location "<REDMINE_CONNECTOR_HOME>/repository/".
 
- 6.  Compress modified ESB as wso2esb-4.9.0 zip and copy that zip file in to location "<REDMINE_CONNECTOR_HOME>/repository/".
-
-         
- 7.  Prerequisites for Redmine Connector Integration Testing
+ 5.  Prerequisites for Redmine Connector Integration Testing
 
      Follow these steps before start testing.
      a)  Create a fresh account in Redmine using the URL http://m.redmine.org/ with the web browser.
      b)  Login to the administrations panel of the account created using the login credentials with the specific API URL.
      c)  Go to Administration -> Settings -> Authentication and enable the check box in "Enable REST web service".
-     d)  Go to /my/account URL of your Redmine demo site and copy the API Key from the right hand side of the screen to apiKey property           in the redmine.properties property file.
+     d)  Go to /my/account URL of your Redmine demo site and copy the API Key from the right hand side of the screen to apiKey property in the redmine.properties property file.
      e)  Update the API URL of the created account in the property named apiUrl in the redmine.properties property file.
      f)  Go to Administration and click on 'Load Default Configuration' to load some default settings to the demo instance of Redmine.  
         
@@ -68,7 +64,7 @@ Steps to follow in setting integration test.
 
         5)    attachmentContentType is the content type of the attachment to be added.
 
-        6)    attachmentFileName is the name of the attachment file to be added. Set the resourceDirectoryRelativePath property to the                 relative path leading to this attachment file.
+        6)    attachmentFileName is the name of the attachment file to be added. Set the resourceDirectoryRelativePath property to the relative path leading to this attachment file.
 
         7)    createProjectName is the name of a project to be created.
 
@@ -102,10 +98,14 @@ Steps to follow in setting integration test.
 
         22)   comments is a short description for the time entry.
 
-8.  Navigate to "{REDMINE_CONNECTOR_HOME}/" and run the following command.
+        23)   name is the name of the group (used for creating a group with mandatory parameters).
+
+        24)   groupName is the name of the group(used for creating a group with optional parameters).
+
+6.  Navigate to "{REDMINE_CONNECTOR_HOME}/" and run the following command.
           $ mvn clean install
 
-   
+
      credential of test account:
      API URL: http://connect.m.redmine.org
      username: wso2connector

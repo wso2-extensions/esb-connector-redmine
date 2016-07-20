@@ -2,6 +2,6 @@
   "apiUrl": "%s(apiUrl)",
   "apiKey": "%s(apiKey)",
   "responseType": "json",
-  "name": "nameOptional",
-  "userIds": "12"
+  "name": "%s(groupName)",
+  "userIds": "%s(userIds)"
 }
