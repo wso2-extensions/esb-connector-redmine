@@ -1,0 +1,66 @@
+{
+  "id": "http:\/\/wso2jsonschema.org",
+  "title": "root",
+  "$schema": "http:\/\/wso2.org\/json-schema\/wso2-data-mapper-v5.0.0\/schema#",
+  "properties": {
+    "membership": {
+      "id": "http:\/\/wso2jsonschema.org\/membership",
+      "type": "object",
+      "properties": {
+        "id": {
+          "id": "http:\/\/wso2jsonschema.org\/membership\/id",
+          "type": "number"
+        },
+        "project": {
+          "id": "http:\/\/wso2jsonschema.org\/membership\/project",
+          "type": "object",
+          "properties": {
+            "id": {
+              "id": "http:\/\/wso2jsonschema.org\/membership\/project\/id",
+              "type": "number"
+            },
+            "name": {
+              "id": "http:\/\/wso2jsonschema.org\/membership\/project\/name",
+              "type": "string"
+            }
+          }
+        },
+        "user": {
+          "id": "http:\/\/wso2jsonschema.org\/membership\/user",
+          "type": "object",
+          "properties": {
+            "id": {
+              "id": "http:\/\/wso2jsonschema.org\/membership\/user\/id",
+              "type": "number"
+            },
+            "name": {
+              "id": "http:\/\/wso2jsonschema.org\/membership\/user\/name",
+              "type": "string"
+            }
+          }
+        },
+        "roles": {
+          "id": "http:\/\/wso2jsonschema.org\/membership\/roles",
+          "type": "array",
+          "items": [
+            {
+              "id": "http:\/\/wso2jsonschema.org\/membership\/roles\/0",
+              "type": "object",
+              "properties": {
+                "id": {
+                  "id": "http:\/\/wso2jsonschema.org\/membership\/roles\/0\/id",
+                  "type": "number"
+                },
+                "name": {
+                  "id": "http:\/\/wso2jsonschema.org\/membership\/roles\/0\/name",
+                  "type": "string"
+                }
+              }
+            }
+          ]
+        }
+      }
+    }
+  },
+  "type": "object"
+}

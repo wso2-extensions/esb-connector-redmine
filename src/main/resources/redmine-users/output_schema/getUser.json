@@ -1,0 +1,50 @@
+{
+  "id": "http:\/\/wso2jsonschema.org",
+  "title": "root",
+  "$schema": "http:\/\/wso2.org\/json-schema\/wso2-data-mapper-v5.0.0\/schema#",
+  "properties": {
+    "user": {
+      "id": "http:\/\/wso2jsonschema.org\/user",
+      "type": "object",
+      "properties": {
+        "id": {
+          "id": "http:\/\/wso2jsonschema.org\/user\/id",
+          "type": "number"
+        },
+        "login": {
+          "id": "http:\/\/wso2jsonschema.org\/user\/login",
+          "type": "string"
+        },
+        "firstname": {
+          "id": "http:\/\/wso2jsonschema.org\/user\/firstname",
+          "type": "string"
+        },
+        "lastname": {
+          "id": "http:\/\/wso2jsonschema.org\/user\/lastname",
+          "type": "string"
+        },
+        "mail": {
+          "id": "http:\/\/wso2jsonschema.org\/user\/mail",
+          "type": "string"
+        },
+        "created_on": {
+          "id": "http:\/\/wso2jsonschema.org\/user\/created_on",
+          "type": "string"
+        },
+        "last_login_on": {
+          "id": "http:\/\/wso2jsonschema.org\/user\/last_login_on",
+          "type": "string"
+        },
+        "api_key": {
+          "id": "http:\/\/wso2jsonschema.org\/user\/api_key",
+          "type": "string"
+        },
+        "status": {
+          "id": "http:\/\/wso2jsonschema.org\/user\/status",
+          "type": "number"
+        }
+      }
+    }
+  },
+  "type": "object"
+}

@@ -31,5 +31,8 @@
         <dependency component="redmine-customFields"/>
         <description>WSO2 Connector for Redmine</description>
     </component>
+    <authenticationInfo>
+        https://docs.wso2.com/display/ESBCONNECTORS/Configuring+Redmine+Operations
+    </authenticationInfo>
     <icon>icon/icon-small.gif</icon>
 </connector>

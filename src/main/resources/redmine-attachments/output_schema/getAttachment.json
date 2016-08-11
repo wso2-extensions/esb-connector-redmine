@@ -1,0 +1,56 @@
+{
+  "id": "http:\/\/wso2jsonschema.org",
+  "title": "root",
+  "$schema": "http:\/\/wso2.org\/json-schema\/wso2-data-mapper-v5.0.0\/schema#",
+  "properties": {
+    "attachment": {
+      "id": "http:\/\/wso2jsonschema.org\/attachment",
+      "type": "object",
+      "properties": {
+        "id": {
+          "id": "http:\/\/wso2jsonschema.org\/attachment\/id",
+          "type": "number"
+        },
+        "filename": {
+          "id": "http:\/\/wso2jsonschema.org\/attachment\/filename",
+          "type": "string"
+        },
+        "filesize": {
+          "id": "http:\/\/wso2jsonschema.org\/attachment\/filesize",
+          "type": "number"
+        },
+        "content_type": {
+          "id": "http:\/\/wso2jsonschema.org\/attachment\/content_type",
+          "type": "string"
+        },
+        "description": {
+          "id": "http:\/\/wso2jsonschema.org\/attachment\/description",
+          "type": "string"
+        },
+        "content_url": {
+          "id": "http:\/\/wso2jsonschema.org\/attachment\/content_url",
+          "type": "string"
+        },
+        "author": {
+          "id": "http:\/\/wso2jsonschema.org\/attachment\/author",
+          "type": "object",
+          "properties": {
+            "id": {
+              "id": "http:\/\/wso2jsonschema.org\/attachment\/author\/id",
+              "type": "number"
+            },
+            "name": {
+              "id": "http:\/\/wso2jsonschema.org\/attachment\/author\/name",
+              "type": "string"
+            }
+          }
+        },
+        "created_on": {
+          "id": "http:\/\/wso2jsonschema.org\/attachment\/created_on",
+          "type": "string"
+        }
+      }
+    }
+  },
+  "type": "object"
+}

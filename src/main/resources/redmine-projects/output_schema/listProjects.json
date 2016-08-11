@@ -1,0 +1,60 @@
+{
+  "id": "http:\/\/wso2jsonschema.org",
+  "title": "root",
+  "$schema": "http:\/\/wso2.org\/json-schema\/wso2-data-mapper-v5.0.0\/schema#",
+  "properties": {
+    "projects": {
+      "id": "http:\/\/wso2jsonschema.org\/projects",
+      "type": "array",
+      "items": [
+        {
+          "id": "http:\/\/wso2jsonschema.org\/projects\/0",
+          "type": "object",
+          "properties": {
+            "id": {
+              "id": "http:\/\/wso2jsonschema.org\/projects\/0\/id",
+              "type": "number"
+            },
+            "name": {
+              "id": "http:\/\/wso2jsonschema.org\/projects\/0\/name",
+              "type": "string"
+            },
+            "identifier": {
+              "id": "http:\/\/wso2jsonschema.org\/projects\/0\/identifier",
+              "type": "string"
+            },
+            "description": {
+              "id": "http:\/\/wso2jsonschema.org\/projects\/0\/description",
+              "type": "string"
+            },
+            "status": {
+              "id": "http:\/\/wso2jsonschema.org\/projects\/0\/status",
+              "type": "number"
+            },
+            "created_on": {
+              "id": "http:\/\/wso2jsonschema.org\/projects\/0\/created_on",
+              "type": "string"
+            },
+            "updated_on": {
+              "id": "http:\/\/wso2jsonschema.org\/projects\/0\/updated_on",
+              "type": "string"
+            }
+          }
+        }
+      ]
+    },
+    "total_count": {
+      "id": "http:\/\/wso2jsonschema.org\/total_count",
+      "type": "number"
+    },
+    "offset": {
+      "id": "http:\/\/wso2jsonschema.org\/offset",
+      "type": "number"
+    },
+    "limit": {
+      "id": "http:\/\/wso2jsonschema.org\/limit",
+      "type": "number"
+    }
+  },
+  "type": "object"
+}

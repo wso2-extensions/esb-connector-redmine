@@ -1,0 +1,64 @@
+{
+  "id": "http:\/\/wso2jsonschema.org",
+  "title": "root",
+  "$schema": "http:\/\/wso2.org\/json-schema\/wso2-data-mapper-v5.0.0\/schema#",
+  "properties": {
+    "custom_fields": {
+      "id": "http:\/\/wso2jsonschema.org\/custom_fields",
+      "type": "array",
+      "items": [
+        {
+          "id": "http:\/\/wso2jsonschema.org\/custom_fields\/0",
+          "type": "object",
+          "properties": {
+            "id": {
+              "id": "http:\/\/wso2jsonschema.org\/custom_fields\/0\/id",
+              "type": "number"
+            },
+            "name": {
+              "id": "http:\/\/wso2jsonschema.org\/custom_fields\/0\/name",
+              "type": "string"
+            },
+            "customized_type": {
+              "id": "http:\/\/wso2jsonschema.org\/custom_fields\/0\/customized_type",
+              "type": "string"
+            },
+            "field_format": {
+              "id": "http:\/\/wso2jsonschema.org\/custom_fields\/0\/field_format",
+              "type": "string"
+            },
+            "regexp": {
+              "id": "http:\/\/wso2jsonschema.org\/custom_fields\/0\/regexp",
+              "type": "null"
+            },
+            "min_length": {
+              "id": "http:\/\/wso2jsonschema.org\/custom_fields\/0\/min_length",
+              "type": "number"
+            },
+            "max_length": {
+              "id": "http:\/\/wso2jsonschema.org\/custom_fields\/0\/max_length",
+              "type": "number"
+            },
+            "default_value": {
+              "id": "http:\/\/wso2jsonschema.org\/custom_fields\/0\/default_value",
+              "type": "null"
+            },
+            "visible": {
+              "id": "http:\/\/wso2jsonschema.org\/custom_fields\/0\/visible",
+              "type": "boolean"
+            },
+            "trackers": {
+              "id": "http:\/\/wso2jsonschema.org\/custom_fields\/0\/trackers",
+              "type": "null"
+            },
+            "roles": {
+              "id": "http:\/\/wso2jsonschema.org\/custom_fields\/0\/roles",
+              "type": "null"
+            }
+          }
+        }
+      ]
+    }
+  },
+  "type": "object"
+}

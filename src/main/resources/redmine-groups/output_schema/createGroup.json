@@ -1,0 +1,22 @@
+{
+  "id": "http:\/\/wso2jsonschema.org",
+  "title": "root",
+  "$schema": "http:\/\/wso2.org\/json-schema\/wso2-data-mapper-v5.0.0\/schema#",
+  "properties": {
+    "group": {
+      "id": "http:\/\/wso2jsonschema.org\/group",
+      "type": "object",
+      "properties": {
+        "id": {
+          "id": "http:\/\/wso2jsonschema.org\/group\/id",
+          "type": "number"
+        },
+        "name": {
+          "id": "http:\/\/wso2jsonschema.org\/group\/name",
+          "type": "string"
+        }
+      }
+    }
+  },
+  "type": "object"
+}
