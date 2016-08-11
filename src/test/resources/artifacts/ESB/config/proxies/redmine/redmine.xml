@@ -93,7 +93,6 @@
                         <include>{$ctx:include}</include>
                     </redmine.getUser>
                 </case>
-
                 <case regex="urn:getMembershipByMembershipId">
                     <redmine.getMembershipByMembershipId>
                         <membershipId>{$ctx:membershipId}</membershipId>
@@ -116,7 +115,6 @@
                         <assignedToId>{$ctx:assignedToId}</assignedToId>
                     </redmine.createIssueCategory>
                 </case>
-
                 <case regex="urn:updateIssueCategory">
                     <redmine.updateIssueCategory>
                         <issueId>{$ctx:issueId}</issueId>
@@ -124,14 +122,12 @@
                         <assignedToId>{$ctx:assignedToId}</assignedToId>
                     </redmine.updateIssueCategory>
                 </case>
-
                 <case regex="urn:deleteIssueCategory">
                     <redmine.deleteIssueCategory>
                         <issueCategoryId>{$ctx:issueCategoryId}</issueCategoryId>
                         <reassignToId>{$ctx:reassignToId}</reassignToId>
                     </redmine.deleteIssueCategory>
                 </case>
-
                 <case regex="urn:updateUser">
                     <redmine.updateUser>
                         <userId>{$ctx:userId}</userId>
@@ -153,14 +149,12 @@
                         <projectId>{$ctx:projectId}</projectId>
                     </redmine.getProjectMemberships>
                 </case>
-
                 <case regex="urn:updateRolesOfAMembership">
                     <redmine.updateRolesOfAMembership>
                         <membershipId>{$ctx:membershipId}</membershipId>
                         <roleIds>{$ctx:roleIds}</roleIds>
                     </redmine.updateRolesOfAMembership>
                 </case>
-
                 <case regex="urn:getAttachment">
                     <redmine.getAttachment>
                         <id>{$ctx:attachmentId}</id>
@@ -324,7 +318,6 @@
                     <redmine.getCustomFields>
                     </redmine.getCustomFields>
                 </case>
-
                 <case regex="urn:addProjectMember">
                     <redmine.addProjectMember>
                         <projectId>{$ctx:projectId}</projectId>
@@ -337,7 +330,6 @@
                         <membershipId>{$ctx:membershipId}</membershipId>
                     </redmine.deleteMemberships>
                 </case>
-
                 <case regex="urn:createGroup">
                     <redmine.createGroup>
                         <name>{$ctx:name}</name>
