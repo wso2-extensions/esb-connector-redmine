@@ -1,1 +1,130 @@
-{"id":"http:\/\/wso2jsonschema.org","title":"root","$schema":"http:\/\/wso2.org\/json-schema\/wso2-data-mapper-v5.0.0\/schema#","properties":{"issues":{"id":"http:\/\/wso2jsonschema.org\/issues","type":"array","items":[{"id":"http:\/\/wso2jsonschema.org\/issues\/0","type":"object","properties":{"id":{"id":"http:\/\/wso2jsonschema.org\/issues\/0\/id","type":"number"},"project":{"id":"http:\/\/wso2jsonschema.org\/issues\/0\/project","type":"object","properties":{"id":{"id":"http:\/\/wso2jsonschema.org\/issues\/0\/project\/id","type":"number"},"name":{"id":"http:\/\/wso2jsonschema.org\/issues\/0\/project\/name","type":"string"}}},"tracker":{"id":"http:\/\/wso2jsonschema.org\/issues\/0\/tracker","type":"object","properties":{"id":{"id":"http:\/\/wso2jsonschema.org\/issues\/0\/tracker\/id","type":"number"},"name":{"id":"http:\/\/wso2jsonschema.org\/issues\/0\/tracker\/name","type":"string"}}},"status":{"id":"http:\/\/wso2jsonschema.org\/issues\/0\/status","type":"object","properties":{"id":{"id":"http:\/\/wso2jsonschema.org\/issues\/0\/status\/id","type":"number"},"name":{"id":"http:\/\/wso2jsonschema.org\/issues\/0\/status\/name","type":"string"}}},"priority":{"id":"http:\/\/wso2jsonschema.org\/issues\/0\/priority","type":"object","properties":{"id":{"id":"http:\/\/wso2jsonschema.org\/issues\/0\/priority\/id","type":"number"},"name":{"id":"http:\/\/wso2jsonschema.org\/issues\/0\/priority\/name","type":"string"}}},"author":{"id":"http:\/\/wso2jsonschema.org\/issues\/0\/author","type":"object","properties":{"id":{"id":"http:\/\/wso2jsonschema.org\/issues\/0\/author\/id","type":"number"},"name":{"id":"http:\/\/wso2jsonschema.org\/issues\/0\/author\/name","type":"string"}}},"subject":{"id":"http:\/\/wso2jsonschema.org\/issues\/0\/subject","type":"string"},"description":{"id":"http:\/\/wso2jsonschema.org\/issues\/0\/description","type":"null"},"start_date":{"id":"http:\/\/wso2jsonschema.org\/issues\/0\/start_date","type":"string"},"done_ratio":{"id":"http:\/\/wso2jsonschema.org\/issues\/0\/done_ratio","type":"number"},"created_on":{"id":"http:\/\/wso2jsonschema.org\/issues\/0\/created_on","type":"string"},"updated_on":{"id":"http:\/\/wso2jsonschema.org\/issues\/0\/updated_on","type":"string"}}}]},"total_count":{"id":"http:\/\/wso2jsonschema.org\/total_count","type":"number"},"offset":{"id":"http:\/\/wso2jsonschema.org\/offset","type":"number"},"limit":{"id":"http:\/\/wso2jsonschema.org\/limit","type":"number"}},"type":"object"}
+{
+  "id": "http:\/\/wso2jsonschema.org",
+  "title": "root",
+  "$schema": "http:\/\/wso2.org\/json-schema\/wso2-data-mapper-v5.0.0\/schema#",
+  "properties": {
+    "issues": {
+      "id": "http:\/\/wso2jsonschema.org\/issues",
+      "type": "array",
+      "items": [
+        {
+          "id": "http:\/\/wso2jsonschema.org\/issues\/0",
+          "type": "object",
+          "properties": {
+            "id": {
+              "id": "http:\/\/wso2jsonschema.org\/issues\/0\/id",
+              "type": "number"
+            },
+            "project": {
+              "id": "http:\/\/wso2jsonschema.org\/issues\/0\/project",
+              "type": "object",
+              "properties": {
+                "id": {
+                  "id": "http:\/\/wso2jsonschema.org\/issues\/0\/project\/id",
+                  "type": "number"
+                },
+                "name": {
+                  "id": "http:\/\/wso2jsonschema.org\/issues\/0\/project\/name",
+                  "type": "string"
+                }
+              }
+            },
+            "tracker": {
+              "id": "http:\/\/wso2jsonschema.org\/issues\/0\/tracker",
+              "type": "object",
+              "properties": {
+                "id": {
+                  "id": "http:\/\/wso2jsonschema.org\/issues\/0\/tracker\/id",
+                  "type": "number"
+                },
+                "name": {
+                  "id": "http:\/\/wso2jsonschema.org\/issues\/0\/tracker\/name",
+                  "type": "string"
+                }
+              }
+            },
+            "status": {
+              "id": "http:\/\/wso2jsonschema.org\/issues\/0\/status",
+              "type": "object",
+              "properties": {
+                "id": {
+                  "id": "http:\/\/wso2jsonschema.org\/issues\/0\/status\/id",
+                  "type": "number"
+                },
+                "name": {
+                  "id": "http:\/\/wso2jsonschema.org\/issues\/0\/status\/name",
+                  "type": "string"
+                }
+              }
+            },
+            "priority": {
+              "id": "http:\/\/wso2jsonschema.org\/issues\/0\/priority",
+              "type": "object",
+              "properties": {
+                "id": {
+                  "id": "http:\/\/wso2jsonschema.org\/issues\/0\/priority\/id",
+                  "type": "number"
+                },
+                "name": {
+                  "id": "http:\/\/wso2jsonschema.org\/issues\/0\/priority\/name",
+                  "type": "string"
+                }
+              }
+            },
+            "author": {
+              "id": "http:\/\/wso2jsonschema.org\/issues\/0\/author",
+              "type": "object",
+              "properties": {
+                "id": {
+                  "id": "http:\/\/wso2jsonschema.org\/issues\/0\/author\/id",
+                  "type": "number"
+                },
+                "name": {
+                  "id": "http:\/\/wso2jsonschema.org\/issues\/0\/author\/name",
+                  "type": "string"
+                }
+              }
+            },
+            "subject": {
+              "id": "http:\/\/wso2jsonschema.org\/issues\/0\/subject",
+              "type": "string"
+            },
+            "description": {
+              "id": "http:\/\/wso2jsonschema.org\/issues\/0\/description",
+              "type": "null"
+            },
+            "start_date": {
+              "id": "http:\/\/wso2jsonschema.org\/issues\/0\/start_date",
+              "type": "string"
+            },
+            "done_ratio": {
+              "id": "http:\/\/wso2jsonschema.org\/issues\/0\/done_ratio",
+              "type": "number"
+            },
+            "created_on": {
+              "id": "http:\/\/wso2jsonschema.org\/issues\/0\/created_on",
+              "type": "string"
+            },
+            "updated_on": {
+              "id": "http:\/\/wso2jsonschema.org\/issues\/0\/updated_on",
+              "type": "string"
+            }
+          }
+        }
+      ]
+    },
+    "total_count": {
+      "id": "http:\/\/wso2jsonschema.org\/total_count",
+      "type": "number"
+    },
+    "offset": {
+      "id": "http:\/\/wso2jsonschema.org\/offset",
+      "type": "number"
+    },
+    "limit": {
+      "id": "http:\/\/wso2jsonschema.org\/limit",
+      "type": "number"
+    }
+  },
+  "type": "object"
+}

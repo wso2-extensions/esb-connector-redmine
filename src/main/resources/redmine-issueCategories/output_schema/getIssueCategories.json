@@ -1,1 +1,60 @@
-{"id":"http:\/\/wso2jsonschema.org","title":"root","$schema":"http:\/\/wso2.org\/json-schema\/wso2-data-mapper-v5.0.0\/schema#","properties":{"issue_categories":{"id":"http:\/\/wso2jsonschema.org\/issue_categories","type":"array","items":[{"id":"http:\/\/wso2jsonschema.org\/issue_categories\/0","type":"object","properties":{"id":{"id":"http:\/\/wso2jsonschema.org\/issue_categories\/0\/id","type":"number"},"project":{"id":"http:\/\/wso2jsonschema.org\/issue_categories\/0\/project","type":"object","properties":{"id":{"id":"http:\/\/wso2jsonschema.org\/issue_categories\/0\/project\/id","type":"number"},"name":{"id":"http:\/\/wso2jsonschema.org\/issue_categories\/0\/project\/name","type":"string"}}},"name":{"id":"http:\/\/wso2jsonschema.org\/issue_categories\/0\/name","type":"string"},"assigned_to":{"id":"http:\/\/wso2jsonschema.org\/issue_categories\/0\/assigned_to","type":"object","properties":{"id":{"id":"http:\/\/wso2jsonschema.org\/issue_categories\/0\/assigned_to\/id","type":"number"},"name":{"id":"http:\/\/wso2jsonschema.org\/issue_categories\/0\/assigned_to\/name","type":"string"}}}}}]},"total_count":{"id":"http:\/\/wso2jsonschema.org\/total_count","type":"number"}},"type":"object"}
+{
+  "id": "http:\/\/wso2jsonschema.org",
+  "title": "root",
+  "$schema": "http:\/\/wso2.org\/json-schema\/wso2-data-mapper-v5.0.0\/schema#",
+  "properties": {
+    "issue_categories": {
+      "id": "http:\/\/wso2jsonschema.org\/issue_categories",
+      "type": "array",
+      "items": [
+        {
+          "id": "http:\/\/wso2jsonschema.org\/issue_categories\/0",
+          "type": "object",
+          "properties": {
+            "id": {
+              "id": "http:\/\/wso2jsonschema.org\/issue_categories\/0\/id",
+              "type": "number"
+            },
+            "project": {
+              "id": "http:\/\/wso2jsonschema.org\/issue_categories\/0\/project",
+              "type": "object",
+              "properties": {
+                "id": {
+                  "id": "http:\/\/wso2jsonschema.org\/issue_categories\/0\/project\/id",
+                  "type": "number"
+                },
+                "name": {
+                  "id": "http:\/\/wso2jsonschema.org\/issue_categories\/0\/project\/name",
+                  "type": "string"
+                }
+              }
+            },
+            "name": {
+              "id": "http:\/\/wso2jsonschema.org\/issue_categories\/0\/name",
+              "type": "string"
+            },
+            "assigned_to": {
+              "id": "http:\/\/wso2jsonschema.org\/issue_categories\/0\/assigned_to",
+              "type": "object",
+              "properties": {
+                "id": {
+                  "id": "http:\/\/wso2jsonschema.org\/issue_categories\/0\/assigned_to\/id",
+                  "type": "number"
+                },
+                "name": {
+                  "id": "http:\/\/wso2jsonschema.org\/issue_categories\/0\/assigned_to\/name",
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "total_count": {
+      "id": "http:\/\/wso2jsonschema.org\/total_count",
+      "type": "number"
+    }
+  },
+  "type": "object"
+}
