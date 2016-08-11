@@ -1,0 +1,76 @@
+{
+  "id": "http:\/\/wso2jsonschema.org",
+  "title": "root",
+  "$schema": "http:\/\/wso2.org\/json-schema\/wso2-data-mapper-v5.0.0\/schema#",
+  "properties": {
+    "time_entry": {
+      "id": "http:\/\/wso2jsonschema.org\/time_entry",
+      "type": "object",
+      "properties": {
+        "id": {
+          "id": "http:\/\/wso2jsonschema.org\/time_entry\/id",
+          "type": "number"
+        },
+        "project": {
+          "id": "http:\/\/wso2jsonschema.org\/time_entry\/project",
+          "type": "object",
+          "properties": {
+            "id": {
+              "id": "http:\/\/wso2jsonschema.org\/time_entry\/project\/id",
+              "type": "number"
+            },
+            "name": {
+              "id": "http:\/\/wso2jsonschema.org\/time_entry\/project\/name",
+              "type": "string"
+            }
+          }
+        },
+        "issue": {
+          "id": "http:\/\/wso2jsonschema.org\/time_entry\/issue",
+          "type": "object",
+          "properties": {
+            "id": {
+              "id": "http:\/\/wso2jsonschema.org\/time_entry\/issue\/id",
+              "type": "number"
+            }
+          }
+        },
+        "user": {
+          "id": "http:\/\/wso2jsonschema.org\/time_entry\/user",
+          "type": "object",
+          "properties": {
+            "id": {
+              "id": "http:\/\/wso2jsonschema.org\/time_entry\/user\/id",
+              "type": "number"
+            },
+            "name": {
+              "id": "http:\/\/wso2jsonschema.org\/time_entry\/user\/name",
+              "type": "string"
+            }
+          }
+        },
+        "hours": {
+          "id": "http:\/\/wso2jsonschema.org\/time_entry\/hours",
+          "type": "number"
+        },
+        "comments": {
+          "id": "http:\/\/wso2jsonschema.org\/time_entry\/comments",
+          "type": "string"
+        },
+        "spent_on": {
+          "id": "http:\/\/wso2jsonschema.org\/time_entry\/spent_on",
+          "type": "string"
+        },
+        "created_on": {
+          "id": "http:\/\/wso2jsonschema.org\/time_entry\/created_on",
+          "type": "string"
+        },
+        "updated_on": {
+          "id": "http:\/\/wso2jsonschema.org\/time_entry\/updated_on",
+          "type": "string"
+        }
+      }
+    }
+  },
+  "type": "object"
+}

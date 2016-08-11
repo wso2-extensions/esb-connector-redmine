@@ -1,0 +1,66 @@
+{
+  "id": "http:\/\/wso2jsonschema.org",
+  "title": "root",
+  "$schema": "http:\/\/wso2.org\/json-schema\/wso2-data-mapper-v5.0.0\/schema#",
+  "properties": {
+    "versions": {
+      "id": "http:\/\/wso2jsonschema.org\/versions",
+      "type": "array",
+      "items": [
+        {
+          "id": "http:\/\/wso2jsonschema.org\/versions\/0",
+          "type": "object",
+          "properties": {
+            "id": {
+              "id": "http:\/\/wso2jsonschema.org\/versions\/0\/id",
+              "type": "number"
+            },
+            "project": {
+              "id": "http:\/\/wso2jsonschema.org\/versions\/0\/project",
+              "type": "object",
+              "properties": {
+                "id": {
+                  "id": "http:\/\/wso2jsonschema.org\/versions\/0\/project\/id",
+                  "type": "number"
+                },
+                "name": {
+                  "id": "http:\/\/wso2jsonschema.org\/versions\/0\/project\/name",
+                  "type": "string"
+                }
+              }
+            },
+            "name": {
+              "id": "http:\/\/wso2jsonschema.org\/versions\/0\/name",
+              "type": "string"
+            },
+            "description": {
+              "id": "http:\/\/wso2jsonschema.org\/versions\/0\/description",
+              "type": "null"
+            },
+            "status": {
+              "id": "http:\/\/wso2jsonschema.org\/versions\/0\/status",
+              "type": "string"
+            },
+            "sharing": {
+              "id": "http:\/\/wso2jsonschema.org\/versions\/0\/sharing",
+              "type": "string"
+            },
+            "created_on": {
+              "id": "http:\/\/wso2jsonschema.org\/versions\/0\/created_on",
+              "type": "string"
+            },
+            "updated_on": {
+              "id": "http:\/\/wso2jsonschema.org\/versions\/0\/updated_on",
+              "type": "string"
+            }
+          }
+        }
+      ]
+    },
+    "total_count": {
+      "id": "http:\/\/wso2jsonschema.org\/total_count",
+      "type": "number"
+    }
+  },
+  "type": "object"
+}

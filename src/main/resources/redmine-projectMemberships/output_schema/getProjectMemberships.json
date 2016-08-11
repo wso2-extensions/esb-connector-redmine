@@ -1,0 +1,84 @@
+{
+  "id": "http:\/\/wso2jsonschema.org",
+  "title": "root",
+  "$schema": "http:\/\/wso2.org\/json-schema\/wso2-data-mapper-v5.0.0\/schema#",
+  "properties": {
+    "memberships": {
+      "id": "http:\/\/wso2jsonschema.org\/memberships",
+      "type": "array",
+      "items": [
+        {
+          "id": "http:\/\/wso2jsonschema.org\/memberships\/0",
+          "type": "object",
+          "properties": {
+            "id": {
+              "id": "http:\/\/wso2jsonschema.org\/memberships\/0\/id",
+              "type": "number"
+            },
+            "project": {
+              "id": "http:\/\/wso2jsonschema.org\/memberships\/0\/project",
+              "type": "object",
+              "properties": {
+                "id": {
+                  "id": "http:\/\/wso2jsonschema.org\/memberships\/0\/project\/id",
+                  "type": "number"
+                },
+                "name": {
+                  "id": "http:\/\/wso2jsonschema.org\/memberships\/0\/project\/name",
+                  "type": "string"
+                }
+              }
+            },
+            "group": {
+              "id": "http:\/\/wso2jsonschema.org\/memberships\/0\/group",
+              "type": "object",
+              "properties": {
+                "id": {
+                  "id": "http:\/\/wso2jsonschema.org\/memberships\/0\/group\/id",
+                  "type": "number"
+                },
+                "name": {
+                  "id": "http:\/\/wso2jsonschema.org\/memberships\/0\/group\/name",
+                  "type": "string"
+                }
+              }
+            },
+            "roles": {
+              "id": "http:\/\/wso2jsonschema.org\/memberships\/0\/roles",
+              "type": "array",
+              "items": [
+                {
+                  "id": "http:\/\/wso2jsonschema.org\/memberships\/0\/roles\/0",
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "id": "http:\/\/wso2jsonschema.org\/memberships\/0\/roles\/0\/id",
+                      "type": "number"
+                    },
+                    "name": {
+                      "id": "http:\/\/wso2jsonschema.org\/memberships\/0\/roles\/0\/name",
+                      "type": "string"
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "total_count": {
+      "id": "http:\/\/wso2jsonschema.org\/total_count",
+      "type": "number"
+    },
+    "offset": {
+      "id": "http:\/\/wso2jsonschema.org\/offset",
+      "type": "number"
+    },
+    "limit": {
+      "id": "http:\/\/wso2jsonschema.org\/limit",
+      "type": "number"
+    }
+  },
+  "type": "object"
+}
