@@ -1,0 +1,8 @@
+{
+  "apiUrl": "%s(apiUrl)",
+  "apiKey": "%s(apiKey)",
+  "responseType": "json",
+  "projectId": "virj22aa",
+  "userId": "58",
+  "roleIds":"3"
+}
