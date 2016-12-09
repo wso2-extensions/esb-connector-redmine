@@ -1,0 +1,7 @@
+{
+  "apiUrl": "%s(apiUrl)",
+  "apiKey": "%s(apiKey)",
+  "responseType": "json",
+  "groupId": "123",
+  "userId": "123"
+}

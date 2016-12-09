@@ -70,6 +70,7 @@
             <property name="userId" expression="json-eval($.userId)"/>
             <property name="name" expression="json-eval($.name)"/>
             <property name="userIds" expression="json-eval($.userIds)"/>
+            <property name="redmineLimit" expression="json-eval($.redmineLimit)"/>
             <property name="deleteId" expression="json-eval($.deleteId)"/>
             <redmine.init>
                 <apiUrl>{$ctx:apiUrl}</apiUrl>
@@ -188,7 +189,9 @@
                     </redmine.createProject>
                 </case>
                 <case regex="urn:listProjects">
-                    <redmine.listProjects/>
+                    <redmine.listProjects>
+                        <redmineLimit>{$ctx:redmineLimit}</redmineLimit>
+                    </redmine.listProjects>
                 </case>
                 <case regex="urn:getProject">
                     <redmine.getProject>

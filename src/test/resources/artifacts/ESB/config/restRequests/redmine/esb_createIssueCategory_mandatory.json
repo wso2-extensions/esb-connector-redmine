@@ -1,0 +1,8 @@
+{
+  "apiUrl": "%s(apiUrl)",
+  "apiKey": "%s(apiKey)",
+  "responseType": "json",
+  "projectId": "virj22aa",
+  "assignedToId": "58",
+  "issueName": "ThisTest"
+}

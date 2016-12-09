@@ -192,7 +192,7 @@ public class RedmineConnectorIntegrationTest extends ConnectorIntegrationTestBas
     }
 
     /**
-     * Negative test case for getUser method with mandatory parameters.
+     * Negative test case for getUser method with negative parameters.
      */
     @Test(dependsOnMethods = {"testCreateUserWithMandatoryParameters"}, groups = {"wso2.esb"},
             description = "Redmine {getUser} integration test negative case.")
@@ -316,7 +316,7 @@ public class RedmineConnectorIntegrationTest extends ConnectorIntegrationTestBas
     }
 
     /**
-     * Negative test case for updateUser method.
+     * Negative test case for updateUser method with negative parameters.
      */
     @Test(dependsOnMethods = {"testUpdateUserWithOptionalParameters"}, groups = {"wso2.esb"},
             description = "Redmine {updateUser} integration test for negative case.")
@@ -361,7 +361,7 @@ public class RedmineConnectorIntegrationTest extends ConnectorIntegrationTestBas
     }
 
     /**
-     * Negative test case for deleteUser method with mandatory parameters.
+     * Negative test case for deleteUser method with negative parameters.
      */
     @Test(priority = 2, groups = {"wso2.esb"}, description = "Redmine {deleteUser} integration test negative case.")
     public void testDeleteUserNegativeCase() throws Exception {
@@ -667,7 +667,7 @@ public class RedmineConnectorIntegrationTest extends ConnectorIntegrationTestBas
     }
 
     /**
-     * Negative test case for updateProject method with optional parameters.
+     * Negative test case for updateProject method with negative parameters.
      */
     @Test(groups = {"wso2.esb"}, dependsOnMethods = {"testUpdateProjectWithMandatoryParameters",
             "testUpdateProjectWithOptionalParameters"},
@@ -703,6 +703,25 @@ public class RedmineConnectorIntegrationTest extends ConnectorIntegrationTestBas
         Assert.assertEquals(esbRestResponse.getBody().get("total_count"), apiRestResponse.getBody().get("total_count"));
         Assert.assertEquals(((JSONObject) esbRestResponse.getBody().getJSONArray("projects").get(0)).get("id"),
                 ((JSONObject) apiRestResponse.getBody().getJSONArray("projects").get(0)).get("id"));
+    }
+
+    /**
+     * Positive test case for listProjects method with optional parameters.
+     */
+    @Test(groups = {"wso2.esb"}, description = "Redmine {listProjects} integration test with optional parameters.")
+    public void testListProjectsWithOptionalParameters() throws Exception {
+
+        esbRequestHeadersMap.put("Action", "urn:listProjects");
+        final RestResponse<JSONObject> esbRestResponse =
+                sendJsonRestRequest(proxyUrl, "POST", esbRequestHeadersMap, "esb_listProjects_optional.json");
+
+        final String apiEndPoint = connectorProperties.getProperty("apiUrl") + "/projects.json";
+        final RestResponse<JSONObject> apiRestResponse = sendJsonRestRequest(apiEndPoint, "GET", apiRequestHeadersMap);
+
+        Assert.assertEquals(esbRestResponse.getBody().get("total_count"), apiRestResponse.getBody().get("total_count"));
+        Assert.assertEquals(((JSONObject) esbRestResponse.getBody().getJSONArray("projects").get(0)).get("id"),
+                ((JSONObject) apiRestResponse.getBody().getJSONArray("projects").get(0)).get("id"));
+        connectorProperties.put("id", ((JSONObject) esbRestResponse.getBody().getJSONArray("projects").get(0)).get("id"));
     }
 
     /**
@@ -830,7 +849,7 @@ public class RedmineConnectorIntegrationTest extends ConnectorIntegrationTestBas
     }
 
     /**
-     * Negative test case for createIssue method with mandatory parameters.
+     * Negative test case for createIssue method with negative parameters.
      */
     @Test(groups = {"wso2.esb"}, dependsOnMethods = {"testCreateProjectWithMandatoryParameters"},
             description = "Redmine {createIssue} integration test with negative case.")
@@ -908,10 +927,10 @@ public class RedmineConnectorIntegrationTest extends ConnectorIntegrationTestBas
     }
 
     /**
-     * Negative test case for getIssue method with mandatory parameters.
+     * Negative test case for getIssue method with negative parameters.
      */
     @Test(groups = {"wso2.esb"}, dependsOnMethods = {"testCreateIssueWithMandatoryParameters"},
-            description = "Redmine {getIssue} integration test with mandatory parameters.")
+            description = "Redmine {getIssue} integration test with negative parameters.")
     public void testGetIssueWithNegativeCase() throws Exception {
 
         esbRequestHeadersMap.put("Action", "urn:getIssue");
@@ -982,7 +1001,7 @@ public class RedmineConnectorIntegrationTest extends ConnectorIntegrationTestBas
     }
 
     /**
-     * Negative test case for updateIssue method.
+     * Negative test case for updateIssue method with negative parameters.
      */
     @Test(groups = {"wso2.esb"}, dependsOnMethods = {"testGetIssueWithOptionalParameters"},
             description = "Redmine {updateIssue} integration test with negative case.")
@@ -1088,7 +1107,7 @@ public class RedmineConnectorIntegrationTest extends ConnectorIntegrationTestBas
     }
 
     /**
-     * Negative test case for deleteIssue method with mandatory parameters.
+     * Negative test case for deleteIssue method with negative parameters.
      */
     @Test(priority = 3, groups = {"wso2.esb"}, description = "Redmine {deleteIssue} integration test with negative case.")
     public void testDeleteIssueWithNegativeCase() throws Exception {
@@ -1298,7 +1317,7 @@ public class RedmineConnectorIntegrationTest extends ConnectorIntegrationTestBas
     }
 
     /**
-     * Negative test case for updateTimeEntry method.
+     * Negative test case for updateTimeEntry method with negative parameter.
      */
     @Test(groups = {"wso2.esb"}, dependsOnMethods = {"testUpdateTimeEntryWithMandatoryParametersOnlyIssueId"},
             description = "Redmine {updateTimeEntry} integration test with negative case.")
@@ -1393,7 +1412,7 @@ public class RedmineConnectorIntegrationTest extends ConnectorIntegrationTestBas
     }
 
     /**
-     * Negative test case for getTimeEntry method.
+     * Negative test case for getTimeEntry method with negative parameters.
      */
     @Test(groups = {"wso2.esb"}, dependsOnMethods = {"testCreateTimeEntryWithMandatoryParametersOnlyIssueId"},
             description = "Redmine {getTimeEntry} integration test with negative case.")
@@ -1430,7 +1449,7 @@ public class RedmineConnectorIntegrationTest extends ConnectorIntegrationTestBas
     }
 
     /**
-     * Negative test case for listTimeEntries method.
+     * Negative test case for listTimeEntries method with negative parameters..
      */
     @Test(groups = {"wso2.esb"}, dependsOnMethods = {"testGetTimeEntryWithMandatoryParameters"},
             description = "Redmine {listTimeEntries} integration test with negative case.")
@@ -1632,5 +1651,207 @@ public class RedmineConnectorIntegrationTest extends ConnectorIntegrationTestBas
 
         Thread.sleep(Long.parseLong(connectorProperties.getProperty("timeOut")));
         Assert.assertEquals(esbRestResponse.getHttpStatusCode(), 200);
+    }
+
+    /**
+     * Negative test case for addUserToGroup method with negative parameters.
+     */
+    @Test(groups = {"wso2.esb"}, description = "Redmine {addUserToGroup} integration test with negative parameters.")
+    public void testAddUserToGroupWithNegativeParameters() throws Exception {
+
+        esbRequestHeadersMap.put("Action", "urn:addUserToGroup");
+        RestResponse<JSONObject> esbRestResponse = sendJsonRestRequest(proxyUrl, "POST", esbRequestHeadersMap,
+                "esb_addUserToGroup_negative.json");
+
+        Thread.sleep(Long.parseLong(connectorProperties.getProperty("timeOut")));
+        Assert.assertEquals(esbRestResponse.getHttpStatusCode(), 404);
+    }
+
+    /**
+     * Negative test case for createGroup method with negative parameters.
+     */
+    @Test(groups = {"wso2.esb"}, description = "Redmine {createGroup} integration test with negative parameters.")
+    public void testcreateGroupWithNegativeParameters() throws Exception {
+
+        esbRequestHeadersMap.put("Action", "urn:addUserToGroup");
+        RestResponse<JSONObject> esbRestResponse = sendJsonRestRequest(proxyUrl, "POST", esbRequestHeadersMap,
+                "esb_createGroup_negative.json");
+
+        Thread.sleep(Long.parseLong(connectorProperties.getProperty("timeOut")));
+        Assert.assertEquals(esbRestResponse.getHttpStatusCode(), 500);
+    }
+
+    /**
+    * Negative test case for deleteGroup method with negative parameters.
+     */
+    @Test(groups = {"wso2.esb"},description = "Redmine {deleteGroup} integration test with negative parameters.")
+    public void testDeleteGroupWithNegativeParameters() throws Exception {
+
+        esbRequestHeadersMap.put("Action", "urn:deleteGroup");
+
+        RestResponse<JSONObject> esbRestResponse = sendJsonRestRequest(proxyUrl, "POST", esbRequestHeadersMap,
+                "esb_deleteGroup_negative.json");
+
+        Assert.assertEquals(esbRestResponse.getHttpStatusCode(), 404);
+    }
+
+    /**
+     * Positive test case for getVersion method with mandatory parameters.
+     */
+    @Test(groups = {"wso2.esb"}, description = "Redmine {getVersion} integration test with mandatory parameters.")
+    public void testGetVersionWithMandatoryParameters() throws Exception {
+
+        esbRequestHeadersMap.put("Action", "urn:getVersions");
+        RestResponse<JSONObject> esbRestResponse = sendJsonRestRequest(proxyUrl, "POST", esbRequestHeadersMap,
+                "esb_getVersions_mandatory.json");
+
+        Thread.sleep(Long.parseLong(connectorProperties.getProperty("timeOut")));
+        Assert.assertEquals(esbRestResponse.getHttpStatusCode(), 200);
+    }
+
+    /**
+     * Positive test case for getProjectMembership method with mandatory parameters.
+     */
+    @Test(groups = {"wso2.esb"}, description = "Redmine {getProjectMembership} integration test with mandatory parameters.")
+    public void testGetProjectMembershipWithMandatoryParameters() throws Exception {
+
+        esbRequestHeadersMap.put("Action", "urn:getProjectMemberships");
+        RestResponse<JSONObject> esbRestResponse = sendJsonRestRequest(proxyUrl, "POST", esbRequestHeadersMap,
+                "esb_getProjectMembership_mandatory.json");
+
+        String apiEndPoint = connectorProperties.getProperty("apiUrl") +"/projects/virj22aa/memberships.json";
+        RestResponse<JSONObject> apiRestResponse = sendJsonRestRequest(apiEndPoint, "GET", apiRequestHeadersMap);
+
+        Assert.assertEquals(esbRestResponse.getHttpStatusCode(), apiRestResponse.getHttpStatusCode());
+        Assert.assertEquals(esbRestResponse.getBody().toString(), apiRestResponse.getBody().toString());
+    }
+
+    /**
+     * Positive test case for getProjectMembership method with negative parameters.
+     */
+    @Test(groups = {"wso2.esb"}, description = "Redmine {getProjectMembership} integration test with negative parameters.")
+    public void testGetProjectMembershipWithNegativeParameters() throws Exception {
+
+        esbRequestHeadersMap.put("Action", "urn:getProjectMemberships");
+        RestResponse<JSONObject> esbRestResponse = sendJsonRestRequest(proxyUrl, "POST", esbRequestHeadersMap,
+                "esb_getProjectMembership_negative.json");
+
+        String apiEndPoint = connectorProperties.getProperty("apiUrl") +"/projects/negativeid/memberships.json";
+        RestResponse<JSONObject> apiRestResponse = sendJsonRestRequest(apiEndPoint, "GET", apiRequestHeadersMap);
+
+        Assert.assertEquals(esbRestResponse.getHttpStatusCode(), 404);
+    }
+
+    /**
+     * Positive test case for getIssueCategories method with mandatory parameters.
+    */
+    @Test(groups = {"wso2.esb"}, description = "Redmine {getIssueCategories} integration test with mandatory parameters.")
+    public void testGetIssueCategoriesWithMandatoryParameters() throws Exception {
+
+        esbRequestHeadersMap.put("Action", "urn:getIssueCategories");
+        RestResponse<JSONObject> esbRestResponse = sendJsonRestRequest(proxyUrl, "POST", esbRequestHeadersMap,
+                "esb_getIssueCategories_mandatory.json");
+
+        String apiEndPoint = connectorProperties.getProperty("apiUrl") +"/projects/22/issue_categories.json";
+        RestResponse<JSONObject> apiRestResponse = sendJsonRestRequest(apiEndPoint, "GET", apiRequestHeadersMap);
+
+       Assert.assertEquals(esbRestResponse.getHttpStatusCode(), apiRestResponse.getHttpStatusCode());
+        Assert.assertEquals(esbRestResponse.getBody().toString(), apiRestResponse.getBody().toString());
+    }
+
+    /**
+     * Positive test case for getIssueCategoryById method with mandatory parameters.
+     */
+    @Test(groups = {"wso2.esb"}, description = "Redmine {getIssueCategoryById} integration test with mandatory parameters.")
+    public void testGetIssueCategoryByIdWithMandatoryParameters() throws Exception {
+
+        esbRequestHeadersMap.put("Action", "urn:getIssueCategoryById");
+        RestResponse<JSONObject> esbRestResponse = sendJsonRestRequest(proxyUrl, "POST", esbRequestHeadersMap,
+                "esb_getIssueCategoryById_mandatory.json");
+
+        String apiEndPoint = connectorProperties.getProperty("apiUrl") +"/issue_categories/2.json";
+        RestResponse<JSONObject> apiRestResponse = sendJsonRestRequest(apiEndPoint, "GET", apiRequestHeadersMap);
+
+        Assert.assertEquals(esbRestResponse.getHttpStatusCode(), apiRestResponse.getHttpStatusCode());
+        Assert.assertEquals(esbRestResponse.getBody().toString(), apiRestResponse.getBody().toString());
+    }
+
+    /**
+     * Negative test case for getIssueCategoryById method with negative parameters.
+     */
+    @Test(groups = {"wso2.esb"}, description = "Redmine {getIssueCategoryById} integration test with negative parameters.")
+    public void testGetIssueCategoryByIdWithNegativeParameters() throws Exception {
+
+        esbRequestHeadersMap.put("Action", "urn:getIssueCategoryById");
+        RestResponse<JSONObject> esbRestResponse = sendJsonRestRequest(proxyUrl, "POST", esbRequestHeadersMap,
+                "esb_getIssueCategoryById_negative.json");
+
+        String apiEndPoint = connectorProperties.getProperty("apiUrl") +"/issue_categories/1.json";
+        RestResponse<JSONObject> apiRestResponse = sendJsonRestRequest(apiEndPoint, "GET", apiRequestHeadersMap);
+
+        Assert.assertEquals(esbRestResponse.getHttpStatusCode(), 404);
+    }
+
+    /**
+     * Negative test case for getIssueCategories method with negative parameters.
+     */
+    @Test(groups = {"wso2.esb"}, description = "Redmine {getIssueCategories} integration test with negative parameters.")
+    public void testGetIssueCategoriesWithNegativeParameters() throws Exception {
+
+        esbRequestHeadersMap.put("Action", "urn:getIssueCategories");
+        RestResponse<JSONObject> esbRestResponse = sendJsonRestRequest(proxyUrl, "POST", esbRequestHeadersMap,
+                "esb_getIssueCategories_negative.json");
+
+        String apiEndPoint = connectorProperties.getProperty("apiUrl") +"/projects/negativeId/issue_categories.json";
+        RestResponse<JSONObject> apiRestResponse = sendJsonRestRequest(apiEndPoint, "GET", apiRequestHeadersMap);
+
+        Assert.assertEquals(esbRestResponse.getHttpStatusCode(), 404);
+    }
+
+    /**
+     * Positive test case for getMembershipByMembershipId method with mandatory parameters.
+     */
+    @Test(groups = {"wso2.esb"}, description = "Redmine {getMembershipByMembershipId} integration test with mandatory parameters.")
+    public void testGetMembershipByMembershipIdWithMandatoryParameters() throws Exception {
+
+        esbRequestHeadersMap.put("Action", "urn:getMembershipByMembershipId");
+        RestResponse<JSONObject> esbRestResponse = sendJsonRestRequest(proxyUrl, "POST", esbRequestHeadersMap,
+                "esb_getMembershipByMembershipId_mandatory.json");
+
+        String apiEndPoint = connectorProperties.getProperty("apiUrl") +"/memberships/6.json";
+        RestResponse<JSONObject> apiRestResponse = sendJsonRestRequest(apiEndPoint, "GET", apiRequestHeadersMap);
+
+        Assert.assertEquals(esbRestResponse.getHttpStatusCode(), apiRestResponse.getHttpStatusCode());
+        Assert.assertEquals(esbRestResponse.getBody().toString(), apiRestResponse.getBody().toString());
+    }
+
+    /**
+     * Positive test case for getMembershipByMembershipId method with negative parameters.
+     */
+    @Test(groups = {"wso2.esb"}, description = "Redmine {getMembershipByMembershipId} integration test with negative parameters.")
+    public void testGetMembershipByMembershipIdWithNegativeParameters() throws Exception {
+
+        esbRequestHeadersMap.put("Action", "urn:getMembershipByMembershipId");
+        RestResponse<JSONObject> esbRestResponse = sendJsonRestRequest(proxyUrl, "POST", esbRequestHeadersMap,
+                "esb_getMembershipByMembershipId_negative.json");
+
+        String apiEndPoint = connectorProperties.getProperty("apiUrl") +"/memberships/111.json";
+        RestResponse<JSONObject> apiRestResponse = sendJsonRestRequest(apiEndPoint, "GET", apiRequestHeadersMap);
+
+        Assert.assertEquals(esbRestResponse.getHttpStatusCode(), 404);
+    }
+
+    /**
+     * Negative test case for addProjectMember method with negative parameters.
+     */
+    @Test(groups = {"wso2.esb"},
+            description = "Redmine {addProjectMember} integration test with negative parameters.")
+    public void testAddProjectMemberWithNegativeParameters() throws Exception {
+
+        esbRequestHeadersMap.put("Action", "urn:addProjectMember");
+        RestResponse<JSONObject> esbRestResponse = sendJsonRestRequest(proxyUrl, "POST", esbRequestHeadersMap,
+                "esb_addProjectMember_negative.json");
+
+        Assert.assertEquals(esbRestResponse.getHttpStatusCode(),500);
     }
 }
