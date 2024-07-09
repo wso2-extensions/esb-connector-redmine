@@ -1,0 +1,21 @@
+{
+    "name": "Redmine",
+    "owner": "WSO2",
+    "category": "Issue Tracking and Project Management",
+    "documentationUrl": "https://docs.wso2.com/display/ESBCONNECTORS/Redmine+Connector",
+    "description": "The Redmine connector allows you to access the Redmine REST API through WSO2 ESB. This API provides access and basic CRUD operations (create, read, update, and delete) for resources such as issues, projects, and users. ",
+    "status": "Unsupported",
+    "labels": [
+        "connector"
+    ],
+    "releases": [
+        {
+            "tagName": "v1.0.1",
+            "products": [
+                "ESB 5.0.0",
+                "ESB 4.9.0"
+            ],
+            "isHidden": false
+        }
+    ]
+}
